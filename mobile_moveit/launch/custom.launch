@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find mobile_moveit)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="false"/>
+  </include>
+  <include file="$(find mobile_moveit)/launch/move_group.launch" />
+  <include file="$(find mobile_moveit)/launch/moveit_rviz.launch" />
+</launch>

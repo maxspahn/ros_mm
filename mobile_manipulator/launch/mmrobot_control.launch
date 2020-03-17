@@ -1,0 +1,52 @@
+<launch>
+  <arg name="use_rviz" default="true"/>
+  <arg name="load_gripper" default="true"/>
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+<!--
+  <rosparam file="$(find mobile_control)/config/boxer_control.yaml" command="load" ns="/boxer"/>
+  <rosparam file="$(find mobile_control)/config/panda_control.yaml" command="load" ns="/panda"/>
+-->
+  <rosparam file="$(find mobile_control)/config/mmrobot_control.yaml" command="load" ns="/mmrobot"/>
+    
+
+
+  <!-- load the controllers -->
+  <!--node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller panda_arm_controller" /-->
+<!--
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="boxer_velocity_controller boxer_joint_publisher" />
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="panda_joint_publisher joint_position_controller" />
+  <node if="$(arg load_gripper)" name="controller_spawner_hand" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="panda_hand_controller" />
+-->
+
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/mmrobot boxer_velocity_controller boxer_joint_publisher panda_joint_publisher panda_arm_controller" />
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="/mmrobot" respawn="false" output="screen">
+  </node>
+
+  <!-- rviz -->
+  <group if="$(arg use_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find mobile_navigation)/rviz/navigation.rviz"/>
+  </group>
+
+    <!--include file="$(find moveit_mm)/launch/planning_context.launch">
+        <arg name="load_robot_description" value="true"/-->
+        <!--arg name="load_gripper" value="$(arg load_gripper)" /-->
+    <!--/include-->
+    <!--include file="$(find moveit_mm)/launch/move_group.launch"-->
+        <!--arg name="load_gripper" value="$(arg load_gripper)" /-->
+<!--
+    </include>
+    <group if="$(arg use_rviz)">
+        <include file="$(find moveit_mm)/launch/moveit_rviz.launch" />
+    </group>
+
+    <node name="joint_state_desired_publisher" pkg="topic_tools" type="relay" args="joint_states joint_states_desired" />
+-->
+
+    <!-- launch robot control node for moveit motion planning -->
+<!--
+    <node pkg="panda_simulation" type="robot_control_node" name="robot_control_node" output="screen"/>
+-->
+</launch>

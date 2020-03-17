@@ -1,0 +1,2 @@
+panda/gazebo_ros_control/pid_gains:
+  panda_joint1: {p: 1.0, i: 0.0, d: 1.0}
