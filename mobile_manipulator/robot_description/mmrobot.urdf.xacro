@@ -9,7 +9,7 @@
   <xacro:include filename="$(find franka_description)/robots/panda.transmission.xacro"/>
 -->
   <xacro:include filename="$(find mobile_manipulator)/boxer_description/boxer.urdf.xacro"/>
-  <xacro:include filename="$(find franka_description)/robots/panda_arm_hand.urdf.xacro"/>
+  <xacro:include filename="$(find mobile_manipulator)/franka_description/robots/panda_arm_hand.urdf.xacro"/>
 
   <!-- Boxer -->
   <xacro:boxer_description/>

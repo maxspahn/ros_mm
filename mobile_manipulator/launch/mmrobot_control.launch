@@ -18,8 +18,7 @@
   <node if="$(arg load_gripper)" name="controller_spawner_hand" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="panda_hand_controller" />
 -->
 
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/mmrobot boxer_velocity_controller boxer_joint_publisher panda_joint_publisher panda_arm_controller" />
-
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/mmrobot boxer_velocity_controller boxer_joint_publisher panda_joint_publisher joint_position_controller" />
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="/mmrobot" respawn="false" output="screen">
   </node>
