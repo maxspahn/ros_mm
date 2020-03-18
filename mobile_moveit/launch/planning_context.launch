@@ -9,7 +9,7 @@
 
   <!-- Load universal robot description format (URDF) -->
   <!-- I think this is done by gazebo-->
-  <param name="mmrobot/robot_description" textfile="$(find mobile_manipulator)/robot_description/t.urdf"/>
+  <param name="mmrobot/robot_description" command="$(find xacro)/xacro.py '$(find mobile_manipulator)/robot_description/mmrobot.urdf.xacro'" />
   
 
   <!-- The semantic description that corresponds to the URDF -->

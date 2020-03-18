@@ -5,7 +5,6 @@
   </include>
 
   <node ns="mmrobot" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <param name="/use_gui" value="true"/>
     <rosparam param="/source_list">[/panda_arm_controller/state]</rosparam>
   </node>
 

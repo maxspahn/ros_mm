@@ -1,5 +1,5 @@
 controller_list:
-  - name: panda_arm_controller
+  - name: mmrobot/panda_arm_controller
     action_ns: "follow_joint_trajectory"
     type: FolllowJointTrajectory
     joints: [mmrobot_joint1, mmrobot_joint2, mmrobot_joint3, mmrobot_joint4, mmrobot_joint5, mmrobot_joint6, mmrobot_joint7]
