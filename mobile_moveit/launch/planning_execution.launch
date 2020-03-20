@@ -1,12 +1,12 @@
 <launch>
   <rosparam command="load" file="$(find mobile_moveit)/config/joint_names.yaml"/>
-  <include file="$(find mobile_moveit)/launch/planning_context.launch">
+  <!--include file="$(find mobile_moveit)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/>
-  </include>
+  </include-->
 
-  <node ns="mmrobot" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  <!--node ns="mmrobot" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <rosparam param="/source_list">[/panda_arm_controller/state]</rosparam>
-  </node>
+  </node-->
 
   <include file="$(find mobile_moveit)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true"/>
