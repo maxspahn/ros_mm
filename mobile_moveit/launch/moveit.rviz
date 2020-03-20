@@ -9,7 +9,7 @@ Panels:
         - /MotionPlanning1
         - /MotionPlanning1/Planning Request1
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 278
+    Tree Height: 245
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -21,6 +21,8 @@ Panels:
     Name: RvizVisualToolsGui
 Preferences:
   PromptSaveOnExit: true
+Toolbars:
+  toolButtonStyle: 2
 Visualization Manager:
   Class: ""
   Displays:
@@ -60,6 +62,57 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        chassis_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        extrusion1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        extrusion2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        extrusion3:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        extrusion4:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_laser:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        internal_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        lift_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         mmrobot_hand:
           Alpha: 1
           Show Axes: false
@@ -119,10 +172,56 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        world:
+        rear_left_sonar_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        rear_right_sonar_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rotacastor_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rotacastor_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        stereo:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        stereo_left:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        stereo_right:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        top_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        top_mount_bottom:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Loop Animation: false
       Name: Trajectory
       Robot Alpha: 0.5
@@ -156,6 +255,57 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
+          base_footprint:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          chassis_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          front_laser:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          imu_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          internal_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          lift_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           mmrobot_hand:
             Alpha: 1
             Show Axes: false
@@ -215,10 +365,56 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          world:
+          rear_left_sonar_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          rear_right_sonar_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rotacastor_left_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rotacastor_right_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          stereo:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          stereo_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          stereo_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          top_mount_bottom:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          wheel_left_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          wheel_right_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true
@@ -257,6 +453,57 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
+          base_footprint:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          chassis_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          front_laser:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          imu_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          internal_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          lift_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           mmrobot_hand:
             Alpha: 1
             Show Axes: false
@@ -316,10 +563,56 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          world:
+          rear_left_sonar_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          rear_right_sonar_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rotacastor_left_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rotacastor_right_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          stereo:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          stereo_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          stereo_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          top_mount_bottom:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          wheel_left_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          wheel_right_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         Loop Animation: false
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
@@ -342,7 +635,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: mmrobot_arm
+        Planning Group: arm_group
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
@@ -365,6 +658,57 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
+          base_footprint:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          base_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          chassis_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          extrusion4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          front_laser:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          imu_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          internal_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          lift_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           mmrobot_hand:
             Alpha: 1
             Show Axes: false
@@ -424,10 +768,56 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          world:
+          rear_left_sonar_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          rear_right_sonar_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          rotacastor_left_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          rotacastor_right_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          stereo:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          stereo_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          stereo_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          top_mount:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          top_mount_bottom:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          wheel_left_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          wheel_right_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
         Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true
@@ -473,22 +863,22 @@ Visualization Manager:
 Window Geometry:
   Displays:
     collapsed: false
-  Height: 1004
+  Height: 1050
   Help:
     collapsed: false
   Hide Left Dock: false
   Hide Right Dock: false
   MotionPlanning:
     collapsed: false
-  MotionPlanning - Slider:
+  MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002b900000392fc020000000ffb000000100044006900730070006c006100790073010000003d00000153000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a00560069006500770073000000026d000000b5000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb0000002e004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d00200053006c0069006400650072010000026f000000480000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670000000294000002410000000000000000fb00000024005200760069007a00560069007300750061006c0054006f006f006c00730047007500690100000196000000410000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000034f000001fb0000000000000000fb000000120020002d00200053006c006900640065007201000002df000000480000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000032d000001fb0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000003c005400720061006a006500630074006f007200790020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001dd000001f20000019b00ffffff000003200000039200000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000010000000000000295000003c0fc020000000ffb000000100044006900730070006c006100790073010000003d00000132000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a00560069006500770073000000026d000000b5000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e00670100000374000001890000000000000000fb0000002e004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d00200053006c0069006400650072010000026f000000480000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e00670100000175000002410000019b00fffffffb00000024005200760069007a00560069007300750061006c0054006f006f006c007300470075006901000003bc000000410000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000034f000001fb0000000000000000fb000000120020002d00200053006c006900640065007201000002df000000480000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000032d000001fb0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000003c005400720061006a006500630074006f007200790020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001dd000001f2000000000000000000000125000003c000000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   RvizVisualToolsGui:
     collapsed: false
   Trajectory - Trajectory Slider:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1503
-  X: 1769
-  Y: 1081
+  Width: 960
+  X: 0
+  Y: 20
