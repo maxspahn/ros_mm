@@ -50,6 +50,8 @@ roslaunch mobile_navigation mmrobot_navigation.launch
 ```
 
 Launch the navigation stack for the manipulator (the panda)
+This is only possible when the EffortJointInterface was selected during the gazebo
+startup.
 ```
 roslaunch mobile_moveit planning_execution.launch
 ```
