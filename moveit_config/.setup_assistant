@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: mobile_manipulator
+    relative_path: robot_description/mmrobot.urdf.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/mmrobot_description.srdf
+  CONFIG:
+    author_name: Max Spahn
+    author_email: m.spahn@tudelft.nl
+    generated_timestamp: 1584542320

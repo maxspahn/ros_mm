@@ -7,8 +7,7 @@ from std_msgs.msg import Float64MultiArray
 
 def moveBoth():
     rospy.init_node('simpleCommander')
-    #pubArm = rospy.Publisher('/mmrobot/joint_position_controller/command',
-    pubArm = rospy.Publisher('/mmrobot/panda_arm_controller/command',
+    pubArm = rospy.Publisher('/mmrobot/joint_position_controller/command',
 Float64MultiArray, queue_size=10)
     rate = rospy.Rate(10)
     f = Float64MultiArray()

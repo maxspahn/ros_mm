@@ -1,12 +1,11 @@
 <launch>
   <!-- Arguments -->
   <arg name="model" default="boxer"/> 
-  <arg name="set_base_frame" default="mmrobot/base_link"/>
+  <arg name="set_base_frame" default="base_link"/>
   <arg name="set_odom_frame" default="odom"/>
   <arg name="set_map_frame"  default="map"/>
   <arg name="scan_topic" default="front/scan"/>
-  <arg name="odom_topic" default="mmrobot/boxer_velocity_controller/odom"/>
-unch>
+  <arg name="odom_topic" default="boxer_velocity_controller/odom"/>
 
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
 

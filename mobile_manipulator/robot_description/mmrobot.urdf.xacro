@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mmrobot_description">
   <xacro:arg name="robot_name" default="mmrobot"/>
+  <xacro:arg name="panda_hi" default="PositionJointInterface"/>
 
 <!--
   <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro"/>
@@ -20,7 +21,7 @@
   <xacro:panda_arm arm_id='$(arg robot_name)' connected_to='top_mount' xyz='-0.15 0 0' />
   <xacro:hand ns="$(arg robot_name)" rpy="0 0 ${-pi/4}" connected_to="$(arg robot_name)_link8"/>
   <xacro:panda_gazebo robot_name="$(arg robot_name)" />
-  <xacro:panda_transmission robot_name="$(arg robot_name)" load_hand="true"/>
+  <xacro:panda_transmission robot_name="$(arg robot_name)" load_hand="true" hi="$(arg panda_hi)"/>
 
 </robot>
 

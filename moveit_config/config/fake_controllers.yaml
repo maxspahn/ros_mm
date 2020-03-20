@@ -1,0 +1,17 @@
+controller_list:
+  - name: fake_arm_group_controller
+    joints:
+      - mmrobot_joint1
+      - mmrobot_joint2
+      - mmrobot_joint3
+      - mmrobot_joint4
+      - mmrobot_joint5
+      - mmrobot_joint6
+      - mmrobot_joint7
+  - name: fake_base_group_controller
+    joints:
+      []
+  - name: fake_hand_group_controller
+    joints:
+      - mmrobot_finger_joint1
+      - mmrobot_finger_joint2

@@ -1,5 +1,14 @@
 <launch>
-  <param name="mmrobot/robot_description" command="$(find xacro)/xacro --inorder $(find mobile_manipulator)/robot_description/mmrobot.urdf.xacro"/>
+  <!-- either PositionJointInterface, VelocityJointInterface or EffortJointInterface-->
+  <!-- PositionJointInterface requires the custom panda controllers to be installed-->
+  <!-- the setting here is important when using the joystick controller-->
+  <arg name="panda_hi" default="VelocityJointInterface"/>
+  <param name="panda_controller" value="$(arg panda_hi)"/>
+  <param name="mmrobot/robot_description"
+    command="$(find xacro)/xacro --inorder
+      '$(find mobile_manipulator)/robot_description/mmrobot.urdf.xacro'
+      panda_hi:=$(arg panda_hi)"
+  />
   <param name="box_description" textfile="$(find mobile_manipulator)/models/urdf/simple_box.urdf"/>
   <param name="walls_description" command="$(find xacro)/xacro.py '$(find mobile_manipulator)/models/urdf/walls.urdf.xacro'" />
   <param name="rooms_description" command="$(find xacro)/xacro.py '$(find mobile_manipulator)/models/urdf/rooms.urdf.xacro'" />
@@ -44,6 +53,7 @@
 
   <include file="$(find mobile_manipulator)/launch/mmrobot_control.launch">
     <arg name="use_rviz" value="$(arg use_rviz)"/>
+    <arg name="panda_hi" value="$(arg panda_hi)"/>
   </include>
 
   <group if="$(arg demo)">
