@@ -9,18 +9,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="package://boxer_gazebo/meshes/boxer_world_rooms.dae"/> -->
-        <!-- <mesh filename="package://robot_model/world/supermarket.stl"/> -->
-        <mesh filename="package://robot_model/world/supermarket_gazebo/supermarket.dae"/>
+        <mesh filename="package://mobile_manipulator/world/supermarket.dae"/>
       </geometry>
       <!-- <material name="Gray" /> -->
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="package://boxer_gazebo/meshes/boxer_world_rooms.dae"/> -->
-        <!-- <mesh filename="package://robot_model/world/supermarket.stl"/> -->
-        <mesh filename="package://robot_model/world/supermarket_gazebo/supermarket.dae"/>
+        <mesh filename="package://mobile_manipulator/world/supermarket.dae"/>
       </geometry>
     </collision>
   </link>
