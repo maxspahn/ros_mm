@@ -76,23 +76,4 @@
           args="-d $(find mobile_navigation)/rviz/navigation.rviz"/>
   </group>
 
-    <!--include file="$(find moveit_mm)/launch/planning_context.launch">
-        <arg name="load_robot_description" value="true"/-->
-        <!--arg name="load_gripper" value="$(arg load_gripper)" /-->
-    <!--/include-->
-    <!--include file="$(find moveit_mm)/launch/move_group.launch"-->
-        <!--arg name="load_gripper" value="$(arg load_gripper)" /-->
-<!--
-    </include>
-    <group if="$(arg use_rviz)">
-        <include file="$(find moveit_mm)/launch/moveit_rviz.launch" />
-    </group>
-
-    <node name="joint_state_desired_publisher" pkg="topic_tools" type="relay" args="joint_states joint_states_desired" />
--->
-
-    <!-- launch robot control node for moveit motion planning -->
-<!--
-    <node pkg="panda_simulation" type="robot_control_node" name="robot_control_node" output="screen"/>
--->
 </launch>
