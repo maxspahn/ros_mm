@@ -196,7 +196,7 @@
       </sensor>
     </gazebo>
 
-    <!--gazebo reference="stereo_left">
+    <gazebo reference="stereo_left">
       <material>Gazebo/Grey</material>
       <sensor type="camera" name="camera_left">
         <update_rate>10</update_rate>
@@ -234,7 +234,7 @@
           <distortionT2>0.0</distortionT2>
         </plugin>
       </sensor>
-    </gazebo-->
+    </gazebo>
     <!-- Right -->
     <!--gazebo reference="stereo_right">
       <material>Gazebo/Grey</material>

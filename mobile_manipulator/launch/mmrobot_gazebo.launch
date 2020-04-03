@@ -9,9 +9,13 @@
       '$(find mobile_manipulator)/robot_description/mmrobot.urdf.xacro'
       panda_hi:=$(arg panda_hi)"
   />
-  <param name="box_description" textfile="$(find mobile_manipulator)/models/urdf/simple_box.urdf"/>
+
+  <param name="mockUpStore_description"
+    command="$(find xacro)/xacro --inorder 
+      '$(find mobile_manipulator)/world/urdf/airlab_mockup.urdf.xacro'"/>
+  <!--param name="box_description" textfile="$(find mobile_manipulator)/models/urdf/simple_box.urdf"/>
   <param name="walls_description" command="$(find xacro)/xacro.py '$(find mobile_manipulator)/models/urdf/walls.urdf.xacro'" />
-  <param name="rooms_description" command="$(find xacro)/xacro.py '$(find mobile_manipulator)/models/urdf/rooms.urdf.xacro'" />
+  <param name="rooms_description" command="$(find xacro)/xacro.py '$(find mobile_manipulator)/models/urdf/rooms.urdf.xacro'" /-->
 
   <!-- GAZEBO arguments -->
   <arg name="paused" default="false"/>
@@ -32,7 +36,8 @@
   </include>
 
   <node name="spawn_urdf" pkg="gazebo_ros" ns="mmrobot" type="spawn_model" args="-param robot_description -urdf -model mmrobot"/>
-  <node name="spawn_walls" pkg="gazebo_ros" type="spawn_model"
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param mockUpStore_description -urdf -model mockUpStore"/>
+  <!--node name="spawn_walls" pkg="gazebo_ros" type="spawn_model"
         args="-param walls_description
               -urdf
               -x 0 -y 0 -z 0
@@ -49,7 +54,7 @@
               -urdf
               -x 0 -y -8 -z 0
               -model rooms2"
-        respawn="false" output="screen" />
+        respawn="false" output="screen" /-->
 
   <include file="$(find mobile_manipulator)/launch/mmrobot_control.launch">
     <arg name="use_rviz" value="$(arg use_rviz)"/>
