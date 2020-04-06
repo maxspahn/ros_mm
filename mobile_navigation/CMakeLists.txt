@@ -12,8 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   move_base_msgs
 )
 
-find_package(Eigen3 PATHS /home/mspahn/develop/eigen-3.3.7/cmake)
-find_package(ompl)
+## ONLY NEEDED IF EXTERNAL OMPL IS USED
+##find_package(Eigen3 PATHS /home/mspahn/develop/eigen-3.3.7/cmake)
+##find_package(ompl)
 
 ## Declare a catkin package
 catkin_package()
@@ -31,5 +32,5 @@ target_link_libraries(listener ${catkin_LIBRARIES})
 add_executable(fibon src/fibonacci_client.cpp)
 target_link_libraries(fibon ${catkin_LIBRARIES})
 
-add_executable(goalClient src/sendGoalClient.cpp)
-target_link_libraries(goalClient ${catkin_LIBRARIES} ${OMPL_LIBRARIES})
+##add_executable(goalClient src/sendGoalClient.cpp)
+##target_link_libraries(goalClient ${catkin_LIBRARIES} ${OMPL_LIBRARIES})
