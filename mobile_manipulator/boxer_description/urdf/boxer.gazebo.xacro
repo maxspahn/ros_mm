@@ -318,7 +318,5 @@
       <minDepth>0.0</minDepth>
     </gazebo>
 
-    <!-- Load the main robot description -->
-    <!-- <xacro:include filename="$(find boxer_description)/urdf/boxer.urdf.xacro"/> -->
   </xacro:macro>
 </robot>

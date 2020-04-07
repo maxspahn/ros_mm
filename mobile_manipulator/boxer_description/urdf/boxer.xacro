@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="boxer_description" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:include filename="$(find mobile_manipulator)/boxer_custom_description/urdf/materials.urdf.xacro"/>
+	<xacro:include filename="$(find mobile_manipulator)/boxer_description/urdf/materials.urdf.xacro"/>
 
 	<xacro:macro name="boxer_description">
 
@@ -14,7 +14,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry>
-					<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/chassis_link.dae" />
+					<mesh filename="package://mobile_manipulator/boxer_description/meshes/chassis_link.dae" />
 				</geometry>
 				<material name="">
 					<color rgba="0.8 0.8 0.9 1" />
@@ -23,7 +23,7 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry>
-					<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/chassis_link.STL" />
+					<mesh filename="package://mobile_manipulator/boxer_description/meshes/chassis_link.STL" />
 				</geometry>
 			</collision>
 		</link>
@@ -37,7 +37,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry>
-					<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/internal_link.dae" />
+					<mesh filename="package://mobile_manipulator/boxer_description/meshes/internal_link.dae" />
 				</geometry>
 				<material name="Boxer_DarkGrey"/>
 			</visual>
@@ -47,7 +47,7 @@
 					<!-- Mesh is scaled down slightly in length, to mitigate collision with laser rays due to slow physics updates  -->
       <!-- (The z axis is scaled since the whole model is rotated at the joint, and collision model resolution isn't
       very smart.) -->
-      <mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/internal_link.STL" />
+      <mesh filename="package://mobile_manipulator/boxer_description/meshes/internal_link.STL" />
   </geometry>
 </collision>
 </link>
@@ -68,7 +68,7 @@
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/lift_link.dae" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/lift_link.dae" />
 		</geometry>
 		<material name="">
 			<color rgba="0.8 0.8 0.9 1" />
@@ -77,7 +77,7 @@
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/lift_link.STL" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/lift_link.STL" />
 		</geometry>
 	</collision>
 </link>
@@ -95,14 +95,14 @@
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/top_plate.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/top_plate.stl" />
 		</geometry>
 		<material name="Boxer_DarkGrey" />
 	</visual>
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/top_plate_collision.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/top_plate_collision.stl" />
 		</geometry>
 	</collision>
 </link>
@@ -117,14 +117,14 @@
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 		<material name="Boxer_DarkGrey" />
 	</visual>
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 	</collision>
 </link>
@@ -139,14 +139,14 @@
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 		<material name="Boxer_DarkGrey" />
 	</visual>
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 	</collision>
 </link>
@@ -162,14 +162,14 @@
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 		<material name="Boxer_DarkGrey" />
 	</visual>
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 	</collision>
 </link>
@@ -184,14 +184,14 @@
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 		<material name="Boxer_DarkGrey" />
 	</visual>
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/extrusion.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/extrusion.stl" />
 		</geometry>
 	</collision>
 </link>
@@ -206,14 +206,14 @@
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/top_plate.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/top_plate.stl" />
 		</geometry>
 		<material name="Boxer_DarkGrey" />
 	</visual>
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0" />
 		<geometry>
-			<mesh filename="package://mobile_manipulator/boxer_custom_description/meshes/top_plate_collision.stl" />
+			<mesh filename="package://mobile_manipulator/boxer_description/meshes/top_plate_collision.stl" />
 		</geometry>
 	</collision>
 </link>
@@ -356,9 +356,9 @@ to be that way. -->
 in the right frame w.r.t the ground. -->
 <link name="base_footprint" />
 <joint name="base_footprint_joint" type="fixed">
-	<origin xyz="0 0 0.08" rpy="0 0 0" />
-	<parent link="base_footprint" />
-	<child link="base_link" />
+	<origin xyz="0 0 -0.08" rpy="0 0 0" />
+	<parent link="base_link" />
+	<child link="base_footprint" />
 </joint>
 
 <!-- Link for the position of the laser. -->
@@ -445,6 +445,4 @@ in the right frame w.r.t the ground. -->
 </joint>
 
 </xacro:macro>
-
-<xacro:include filename="$(optenv BOXER_URDF_EXTRAS empty.urdf)" />
 </robot>
