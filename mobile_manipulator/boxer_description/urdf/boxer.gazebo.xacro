@@ -32,7 +32,7 @@
         <robotNamespace>/${robot_namespace}</robotNamespace>
         <updateRate>50.0</updateRate>
         <bodyName>imu_link</bodyName>
-        <frameId>base_footprint</frameId>
+        <frameId>base_link</frameId>
         <topicName>imu/data</topicName>
         <accelDrift>0.005 0.005 0.005</accelDrift>
         <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
@@ -55,7 +55,7 @@
         <odometryFrame>odom</odometryFrame>
         <odometrySource>world</odometrySource>
         <publishOdomTF>true</publishOdomTF>
-        <robotBaseFrame>base_footprint</robotBaseFrame>
+        <robotBaseFrame>base_link</robotBaseFrame>
         <publishWheelTF>false</publishWheelTF>
         <publishTf>true</publishTf>
         <publishWheelJointState>true</publishWheelJointState>
@@ -74,7 +74,7 @@
       <!-- Groud Truth Position, Pose, and Rates plugin -->
       <plugin name="gazebo_ros_p3d" filename="libgazebo_ros_p3d.so">
         <robotNamespace>/${robot_namespace}</robotNamespace>
-        <bodyName>base_footprint</bodyName>
+        <bodyName>base_link</bodyName>
         <topicName>ground_truth_odom</topicName>
         <alwaysOn>true</alwaysOn>
         <updateRate>100.0</updateRate>

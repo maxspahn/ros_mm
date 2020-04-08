@@ -1,5 +1,5 @@
 odom_frame: odom
-base_link_frame: mmrobot/base_footprint
+base_link_frame: mmrobot/base_link
 world_frame: map
 
 two_d_mode: true
