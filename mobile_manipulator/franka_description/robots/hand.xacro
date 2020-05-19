@@ -11,12 +11,12 @@
     <link name="${ns}_hand">
       <visual>
         <geometry>
-          <mesh filename="package://franka_description/meshes/visual/hand.dae"/>
+          <mesh filename="package://mobile_manipulator/franka_description/meshes/visual/hand.dae"/>
         </geometry>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://franka_description/meshes/collision/hand.stl"/>
+          <mesh filename="package://mobile_manipulator/franka_description/meshes/collision/hand.stl"/>
         </geometry>
       </collision>
 
@@ -31,12 +31,12 @@
     <link name="${ns}_leftfinger">
       <visual>
         <geometry>
-          <mesh filename="package://franka_description/meshes/visual/finger.dae"/>
+          <mesh filename="package://mobile_manipulator/franka_description/meshes/visual/finger.dae"/>
         </geometry>
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://franka_description/meshes/collision/finger.stl"/>
+          <mesh filename="package://mobile_manipulator/franka_description/meshes/collision/finger.stl"/>
         </geometry>
       </collision>
 
@@ -52,13 +52,13 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
         <geometry>
-          <mesh filename="package://franka_description/meshes/visual/finger.dae"/>
+          <mesh filename="package://mobile_manipulator/franka_description/meshes/visual/finger.dae"/>
         </geometry>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${pi}"/>
         <geometry>
-          <mesh filename="package://franka_description/meshes/collision/finger.stl"/>
+          <mesh filename="package://mobile_manipulator/franka_description/meshes/collision/finger.stl"/>
         </geometry>
       </collision>
 
