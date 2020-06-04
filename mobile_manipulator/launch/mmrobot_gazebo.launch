@@ -2,7 +2,7 @@
   <!-- either PositionJointInterface, VelocityJointInterface or EffortJointInterface-->
   <!-- PositionJointInterface requires the custom panda controllers to be installed-->
   <!-- the setting here is important when using the joystick controller-->
-  <arg name="panda_hi" default="VelocityJointInterface"/>
+  <arg name="panda_hi" default="EffortJointInterface"/>
   <param name="panda_controller" value="$(arg panda_hi)"/>
   <param name="mmrobot/robot_description"
     command="$(find xacro)/xacro --inorder
