@@ -24,6 +24,7 @@
         <link name="mmrobot_leftfinger" />
         <link name="mmrobot_rightfinger" />
         <joint name="mmrobot_finger_joint1" />
+        <joint name="mmrobot_finger_joint2" />
     </group>
     <group name="mmrobot_arm_hand">
         <group name="arm_group" />
@@ -44,8 +45,8 @@
         <joint name="mmrobot_finger_joint2" value="0.035" />
     </group_state>
     <group_state name="closed" group="hand">
-        <joint name="mmrobot_finger_joint1" value="0" />
-        <joint name="mmrobot_finger_joint2" value="0" />
+        <joint name="mmrobot_finger_joint1" value="0.0" />
+        <joint name="mmrobot_finger_joint2" value="0.0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="hand" parent_link="mmrobot_link8" group="hand" />
