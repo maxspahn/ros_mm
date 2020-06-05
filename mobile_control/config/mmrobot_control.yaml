@@ -11,10 +11,9 @@ joint1_position_controller:
   joint: "mmrobot/mmrobot_joint1"
   pid : {p: 1.0, i: 0.01, d: 10.0}
 
-
 panda_arm_controller:
-    type: position_controllers/JointTrajectoryController
-    joints:
+        type: effort_controllers/JointTrajectoryController
+        joints:
         - mmrobot_joint1
         - mmrobot_joint2
         - mmrobot_joint3
@@ -23,23 +22,32 @@ panda_arm_controller:
         - mmrobot_joint6
         - mmrobot_joint7
 
-    constraints:
-        goal_time: 2.0
+        gains:
+            mmrobot_joint1: { p: 12000, d: 50, i: 0.0, i_clamp: 10000 }
+            mmrobot_joint2: { p: 30000, d: 100, i: 0.02, i_clamp: 10000 }
+            mmrobot_joint3: { p: 18000, d: 50, i: 0.01, i_clamp: 1 }
+            mmrobot_joint4: { p: 18000, d: 70, i: 0.01, i_clamp: 10000 }
+            mmrobot_joint5: { p: 12000, d: 70, i: 0.01, i_clamp: 1 }
+            mmrobot_joint6: { p: 7000, d: 50, i: 0.01, i_clamp: 1 }
+            mmrobot_joint7: { p: 2000, d: 20, i: 0.0, i_clamp: 1 }
 
-    state_publish_rate: 100
-    allow_partial_joints_goal: true
+        constraints:
+            goal_time: 2.0
+
+        state_publish_rate: 25
 
 panda_hand_controller:
-    type: effort_controllers/JointTrajectoryController
-    joints:
-        - mmrobot_finger_joint1
-        - mmrobot_finger_joint2
+        type: effort_controllers/JointTrajectoryController
+        joints:
+            - mmrobot_finger_joint1
+            - mmrobot_finger_joint2
 
-    gains:
-      panda_finger_joint1: { p: 5, d: 3.0, i: 0, i_clamp: 1 }
-      panda_finger_joint2: { p: 5, d: 1.0, i: 0, i_clamp: 1 }
+        gains:
+            mmrobot_finger_joint1: { p: 5, d: 3.0, i: 0, i_clamp: 1 }
+            mmrobot_finger_joint2: { p: 5, d: 1.0, i: 0, i_clamp: 1 }
 
-    state_publish_rate: 25
+        state_publish_rate: 25
+
 joint_position_controller:
     type: panda_simulation/JointPositionController
     arm_id: panda

@@ -45,19 +45,4 @@ startup.
 roslaunch mobile_moveit planning_execution.launch
 ```
 
-### Troubleshooting
-
-Python2 and Python3 might conflict. If when executing a python script such as `send_goal_group.py` you get an error `ModuleNotFoundError: rospkg`, you can fix it in this way:
-```
-sudo apt-get install python-rospkg
-```
-add the fllowing line to your .bashrc
-```
-export PYTHONPATH=$PYTHONPATH:/usr/lib/python2.7/dist-packages
-```
-then save and source your bash
-```
-source .bashrc
-```
-The reason this error occurs is because Python packages in /opt are added to PYTHONPATH environment variable but for the ones in /usr, a path does not exist in the PYTHONPATH variable. The python-rospkg gets installed in /usr by default.
 
