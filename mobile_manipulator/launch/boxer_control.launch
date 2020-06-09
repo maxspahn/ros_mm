@@ -1,11 +1,19 @@
 <launch>
     <arg name="use_rviz" default="true"/>
+    <arg name="control_mode" default="diff_drive" />
     <!-- Load joint controller configurations from YAML file to parameter server -->
     <rosparam file="$(find mobile_control)/config/boxer_control.yaml" command="load" ns="/boxer"/>
     
-    <!-- load the controllers -->
-    <!--node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller panda_arm_controller" /-->
-    <node name="controller_spawner" pkg="controller_manager" ns="/boxer" type="spawner" respawn="false" output="screen" args="boxer_velocity_controller boxer_joint_publisher" />
+    <group if="$(eval control_mode == 'diff_drive')">
+      <node name="controller_spawner" pkg="controller_manager" ns="/boxer" type="spawner" respawn="false" output="screen" args="
+        boxer_velocity_controller
+        boxer_joint_publisher" />
+    </group>
+    <group if="$(eval control_mode == 'single_wheel')">
+      <node name="controller_spawner" pkg="controller_manager" ns="/boxer" type="spawner" respawn="false" output="screen" args="
+        left_wheel
+        right_wheel" />
+    </group>
 
     <!-- convert joint states to TF transforms for rviz, etc -->
     <node name="robot_state_publisher" ns="/boxer" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
