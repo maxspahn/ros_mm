@@ -5,11 +5,10 @@
     
     <!-- load the controllers -->
     <!--node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller panda_arm_controller" /-->
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/boxer boxer_velocity_controller boxer_joint_publisher" />
+    <node name="controller_spawner" pkg="controller_manager" ns="/boxer" type="spawner" respawn="false" output="screen" args="boxer_velocity_controller boxer_joint_publisher" />
 
     <!-- convert joint states to TF transforms for rviz, etc -->
     <node name="robot_state_publisher" ns="/boxer" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
-      <remap from="/joint_states" to="/boxer/joint_states" />
     </node>
 
 </launch>
