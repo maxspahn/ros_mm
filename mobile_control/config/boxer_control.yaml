@@ -43,3 +43,20 @@ boxer_velocity_controller:
       max_velocity           : 2.0   # rad/s
       has_acceleration_limits: true
       max_acceleration       : 2.0   # rad/s^2
+
+right_wheel:
+  type: velocity_controllers/JointVelocityController
+  joint: wheel_right_joint
+  pid:
+    p: 5.0
+    i: 20.0
+    i_clamp: 100
+
+left_wheel:
+  type: velocity_controllers/JointVelocityController
+  joint: wheel_left_joint
+  pid:
+    p: 5.0
+    i: 20.0
+    i_clamp: 100
+

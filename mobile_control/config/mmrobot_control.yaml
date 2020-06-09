@@ -11,7 +11,6 @@ joint1_position_controller:
   joint: "mmrobot/mmrobot_joint1"
   pid : {p: 1.0, i: 0.01, d: 10.0}
 
-
 panda_arm_controller:
     type: position_controllers/JointTrajectoryController
     joints:
