@@ -58,8 +58,8 @@ q_lim_franka_up_vel = [2.1750, 2.1750, 2.1750, 2.1750, 2.6100, 2.6100, 2.6100];
 q_lim_franka_low_vel = - q_lim_franka_up_vel;
 
 % [x, y, theta, q u1, u2];
-lower_bound = [0, 0, -pi, q_lim_franka_low, -100, -100, q_lim_franka_low_vel];
-upper_bound = [15, 15, pi, q_lim_franka_up, 100, 100, q_lim_franka_up_vel];
+lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -100, -100, q_lim_franka_low_vel];
+upper_bound = [inf, inf, pi, q_lim_franka_up, 100, 100, q_lim_franka_up_vel];
 model.lb = lower_bound;
 model.ub = upper_bound;
 
@@ -85,7 +85,7 @@ model.xinitidx = 1:19; % use this to specify on which variables initial conditio
 %% Define solver options
 codeoptions = getOptions(solverName);
 codeoptions.maxit = 250;   % Maximum number of iterations
-codeoptions.printlevel = 2 ; % Use printlevel = 2 to print progress (but not for timings)
+codeoptions.printlevel = 0 ; % Use printlevel = 2 to print progress (but not for timings)
 codeoptions.optlevel = 2;   % 0: no optimization, 1: optimize for size, 2: optimize for speed, 3: optimize for size & speed
 codeoptions.timing = 0;
 codeoptions.overwrite = 1;

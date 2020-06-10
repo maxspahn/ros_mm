@@ -106,5 +106,5 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         mpc_cont.executeRequest()
         print("Request executed")
-        print("Waiting for new Requests, you can use the send_mpc_goal script")
+        print("Waiting for new Requests, you can use the send_mpc_base_goal script")
         time.sleep(10)
