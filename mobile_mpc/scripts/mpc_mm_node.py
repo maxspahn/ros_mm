@@ -128,7 +128,6 @@ class MPCController(object):
     def singleMPCStep(self):
         [x_exp, u_opt] = self.solve()
         self.curU = u_opt
-        print(u_opt) 
         self.publishVelocities(u_opt)
         time.sleep(self.dt)
 
