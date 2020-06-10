@@ -8,7 +8,7 @@ u = z(11:12);
 qdot = z(13:19);
 
 W = diag(ones(10, 1) * 100);
-W(3, 3) = 10;
+W(3, 3) = 0;
 P = diag(ones(9, 1));
 
 J = ([x; q] - g)' * W * ([x; q] - g) + [u; qdot]' * P * [u; qdot];

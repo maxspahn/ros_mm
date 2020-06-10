@@ -3,42 +3,38 @@
   <arg name="load_gripper" default="true"/>
   <arg name="panda_hi" default="PositionJointInterface"/>
   <arg name="effort_control" default="follow_trajectory"/>
+  <arg name="boxer_control" default="diff_drive"/>
+
   <!-- Load joint controller configurations from YAML file to parameter server -->
-<!--
-  <rosparam file="$(find mobile_control)/config/boxer_control.yaml" command="load" ns="/boxer"/>
-  <rosparam file="$(find mobile_control)/config/panda_control.yaml" command="load" ns="/panda"/>
--->
   <rosparam file="$(find mobile_control)/config/mmrobot_control.yaml" command="load" ns="/mmrobot"/>
 
 
-
-  <!-- load the controllers -->
-  <!--node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller panda_arm_controller" /-->
-<!--
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="boxer_velocity_controller boxer_joint_publisher" />
-  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="panda_joint_publisher joint_position_controller" />
-  <node if="$(arg load_gripper)" name="controller_spawner_hand" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="panda_hand_controller" />
--->
+  <!-- Seperation between controller for boxer and arm -->
+  <group if="$(eval boxer_control == 'diff_drive')">
+    <node name="controller_spawner_boxer" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
+      boxer_velocity_controller
+      boxer_joint_publisher"/>
+  </group>
+  <group if="$(eval boxer_control == 'single_wheel')">
+    <node name="controller_spawner_boxer" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
+      left_wheel
+      right_wheel"/>
+  </group>
 
   <group if="$(eval panda_hi == 'VelocityJointInterface')">
-    <node name="controller_spawner" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
-      boxer_velocity_controller
-      boxer_joint_publisher
-      panda_joint_publisher
+    <node name="controller_spawner_arm" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
       mmrobot_joint1_controller
       mmrobot_joint2_controller
       mmrobot_joint3_controller
       mmrobot_joint4_controller
       mmrobot_joint5_controller
       mmrobot_joint6_controller
-      mmrobot_joint7_controller"/>
-    <node name="multi_joint_controller" pkg="mobile_control" type="multiJointControlNode.py" output="screen"/>
+      mmrobot_joint7_controller
+      panda_joint_publisher"/>
+    <node name="multi_joint_controller" pkg="mobile_control" type="multiJointControlNode.py" output="screen"/> 
   </group>
-
   <group if="$(eval panda_hi == 'PositionJointInterface')">
-    <node name="controller_spawner" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
-      boxer_velocity_controller
-      boxer_joint_publisher
+    <node name="controller_spawner_arm" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
       panda_joint_publisher
       joint_position_controller"/>
   </group>
@@ -50,9 +46,7 @@
 
   <group if="$(eval panda_hi == 'EffortJointInterface')">
     <group if="$(eval effort_control == 'inhouse_position')">
-      <node name="controller_spawner" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
-        boxer_velocity_controller
-        boxer_joint_publisher
+      <node name="controller_spawner_arm" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
         panda_joint_publisher
         mmrobot_joint1_position_controller
         mmrobot_joint2_position_controller
@@ -61,17 +55,14 @@
         mmrobot_joint5_position_controller
         mmrobot_joint6_position_controller
         mmrobot_joint7_position_controller"/>
-      <node name="multi_joint_controller" pkg="mobile_control" type="multiJointControlPositionNode.py" output="screen"/>
+      <node name="multi_joint_controller" pkg="mobile_control" type="multiJointControlPositionNode.py" output="screen"/> 
     </group>
     <group if="$(eval effort_control == 'follow_trajectory')">
-      <node name="controller_spawner" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
-        boxer_velocity_controller
-        boxer_joint_publisher
+      <node name="controller_spawner_arm" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
         panda_joint_publisher
         joint_trajectory_controller"/>
     </group>
   </group>
-
 
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="/mmrobot" respawn="false" output="screen">
