@@ -4,8 +4,13 @@ rng('shuffle');
 
 solverName = 'mm_MPC';
 
-forcesPath = genpath('/home/mspahn/develop/forces');
-casadiPath = genpath('/home/mspahn/develop/casadi');
+
+disp("DEFINE THE PATH TO YOUR FORCES AND CASADI INSTALLATION");
+pathForces = '/home/mspahn/develop/forces';
+pathCasadi = '/home/mspahn/develop/casadi';
+
+forcesPath = genpath(pathForces);
+casadiPath = genpath(pathCasadi);
 addpath(forcesPath);
 addpath(casadiPath);
 addpath('functionsOptimization');
