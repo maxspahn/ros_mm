@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import rospy
 import time
@@ -19,8 +19,11 @@ class MPCController(object):
         self.subGoal = rospy.Subscriber('/boxer/mpc_goal', Float64MultiArray, self.goal_cb)
         self.curU = np.array([0, 0])
         self.curState = np.array([0, 0, 0])
-        self.goal = np.array([10, 10, 0])
+        self.goal = np.array([0, 0, 0])
         time.sleep(1)
+        print("MPC Node initialized")
+        print("Current Goal : ", self.goal)
+        print("Current State : ", self.curState)
 
     def odom_cb(self, odometry):
         curPos = np.array([odometry.pose.pose.position.x, odometry.pose.pose.position.y])
@@ -31,10 +34,10 @@ class MPCController(object):
         self.curState = np.concatenate((curPos, curOri));
 
     def goal_cb(self, goalData):
-        self.goal = goalData
+        self.goal = np.array(goalData.data)
 
     def computeError(self):
-        return np.linalg.norm(self.curState[1:2] - self.goal[1:2])
+        return np.linalg.norm(self.curState[0:2] - self.goal[0:2])
 
     def solve(self):
         """Solves the MPC problem for the current state
@@ -62,8 +65,6 @@ class MPCController(object):
         PARAMS['xinit'] = xinit
         PARAMS['x0'] = x0
         PARAMS['all_parameters'] = params
-
-
         solution = diffDrive_MPC_py.diffDrive_MPC_solve(PARAMS)
         x02 = solution[0]['x02']
         x_exp = x02[0:3]
@@ -76,34 +77,29 @@ class MPCController(object):
         self.pubRightWheel.publish(u_right)
         self.pubLeftWheel.publish(u_left)
 
+    def singleMPCStep(self):
+        [x_exp, u_opt] = self.solve()
+        print("state : ", self.curState)
+        print("goal : ", self.goal)
+        self.curU = u_opt
+        self.publishVelocities(u_opt)
+        time.sleep(0.1)
+
     def executeRequest(self):
         error = 100
         while True:
             oldError = error
             error = self.computeError()
+            print(error)
             if error < 0.01:
                 break
-            [x_exp, u_opt] = self.solve()
-            print("state : ", self.curState)
-            print("goal : ", self.goal)
-            self.curU = u_opt
-            #u_opt = np.array([0, 0])
-            self.publishVelocities(u_opt)
-            time.sleep(0.1)
+            self.singleMPCStep()
         self.publishVelocities(np.array([0, 0]))
-        print("Request executed")
-
-    def printError(self):
-        for i in range(10):
-            print(self.curState)
-            print(self.goal)
-            time.sleep(1)
-
-    def run(self):
-        self.executeRequest()
-        print("Request executed")
 
 if __name__ == "__main__":
     mpc_cont = MPCController()
-    u_test = np.array([1, 1])
-    mpc_cont.executeRequest()
+    while not rospy.is_shutdown():
+        mpc_cont.executeRequest()
+        print("Request executed")
+        print("Waiting for new Requests, you can use the send_mpc_goal script")
+        time.sleep(10)
