@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+'../forcesLib/diffDrive/'))
+
 import rospy
 import time
 import tf
