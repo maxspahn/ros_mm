@@ -1,22 +1,24 @@
 function x_next = transitionFunction(z, p)
-%UNTITLED6 Summary of this function goes here
-%   Detailed explanation goes here
-x = z(1:3);
+
+x_base = z(1:3);
 q = z(4:10);
-u = z(11:12);
-qdot = z(13:19);
+q_dot = z(11:17);
+u = z(18:19);
+tau = z(20:26);
 dt = p(1);
 r = p(2);
 L = p(3);
-x_next = [x(1) + r/2 * (u(1) + u(2)) * cos(x(3)) * dt;
-    x(2) + r/2 * (u(1) + u(2)) * sin(x(3)) * dt;
-    x(3) + r/L * (u(1) - u(2)) * dt;
-    q(1) + dt * qdot(1);
-    q(2) + dt * qdot(2); 
-    q(3) + dt * qdot(3);
-    q(4) + dt * qdot(4); 
-    q(5) + dt * qdot(5); 
-    q(6) + dt * qdot(6); 
-    q(7) + dt * qdot(7)];
+
+M = get_MassMatrix(q);
+c = get_CoriolisVector(q,q_dot);
+g = get_GravityVector(q);
+
+x_base_next = [x_base(1) + r/2 * (u(1) + u(2)) * cos(x_base(3)) * dt;
+    x_base(2) + r/2 * (u(1) + u(2)) * sin(x_base(3)) * dt;
+    x_base(3) + r/L * (u(1) - u(2)) * dt];
+q_next = q + dt * q_dot;
+q_dot_next = q_dot + dt * (pinv(M) * (tau - c + g));
+
+x_next = [x_base_next; q_next; q_dot_next];
 end
 
