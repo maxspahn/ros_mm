@@ -9,9 +9,7 @@ sys.path.append(
     )
 )
 
-import rospy
 import time
-import tf
 import numpy as np
 import mm_MPC_py
 
