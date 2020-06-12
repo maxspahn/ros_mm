@@ -3,6 +3,8 @@ clear; clc; close all; clearvars;
 rng('shuffle');
 
 solverName = 'mm_MPC';
+dynamics = 'simple';
+%dynamics = 'torques';
 
 
 disp("DEFINE THE PATH TO YOUR FORCES AND CASADI INSTALLATION");
@@ -42,15 +44,24 @@ deg2rad = @(deg) deg/180*pi; % convert degrees into radians
 rad2deg = @(rad) rad/pi*180; % convert radians into degrees
 
 %% Problem dimensions
-model.N = 15;                                   % horizon length
-model.nvar = 3 + 7 + 7 + 2 + 7;                     % number of variables [x, y, theta, q (size : 7), q_dot (size : 7), u1, u2, tau (size : 7)]
-model.neq= 3 + 7 + 7;                               % dimension of transition function
+model.N = 15;                                       % horizon length
 nbObstacles = 1;
 nbSpheres = 6;                                  % base + 5 for the arm
 model.nh = nbObstacles * nbSpheres;             % number of inequality constraint functions
-n_other_param = 3 + 3 + 7 + 7 + 4 * nbObstacles;    % [dt, r, L, x_des, y_des, theta_des, q_des (size : 7), q_vel_des (size : 7), obstacles(1).x, obstacles(1).y, obstacle(3), obsctacles(1).r, ...]
 
+if strcmp(dynamics, 'torques')
+    model.nvar = 3 + 7 + 7 + 2 + 7;                     % number of variables [x, y, theta, q (size : 7), q_dot (size : 7), u1, u2, tau (size : 7)]
+    model.neq= 3 + 7 + 7;                               % dimension of transition function
+    n_other_param = 3 + 3 + 7 + 7 + 4 * nbObstacles;    % [dt, r, L, x_des, y_des, theta_des, q_des (size : 7), q_vel_des (size : 7), obstacles(1).x, obstacles(1).y, obstacle(3), obsctacles(1).r, ...]
+    model.E = [eye(17, 17), zeros(17, 9)];
+elseif strcmp(dynamics, 'simple')
+    model.nvar = 3 + 7 + 2 + 7;                     % number of variables [x, y, theta, q (size : 7), u1, u2, tau (size : 7)]
+    model.neq= 3 + 7;                               % dimension of transition function
+    n_other_param = 3 + 3 + 7 + 4 * nbObstacles;    % [dt, r, L, x_des, y_des, theta_des, q_des (size : 7), obstacles(1).x, obstacles(1).y, obstacle(3), obsctacles(1).r, ...]
+    model.E = [eye(10, 10), zeros(10, 9)];
+end
 model.npar =  n_other_param;          % number of parameters
+
 
 %% Limits for robot
 q_lim_franka_up = [2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525, 2.8973];
@@ -60,27 +71,40 @@ q_lim_franka_torque = [87, 87, 87, 87, 12, 12, 12];
 q_lim_franka_acc = [15, 7.5, 10, 12.5, 15, 20, 20, 20];
 
 % [x, y, theta, q u1, u2];
-lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -q_lim_franka_vel, -100, -100, -q_lim_franka_torque];
-upper_bound = [inf, inf, pi, q_lim_franka_up, q_lim_franka_vel, 100, 100, q_lim_franka_torque];
+if strcmp(dynamics, 'torques')
+    lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -q_lim_franka_vel, -100, -100, -q_lim_franka_torque];
+    upper_bound = [inf, inf, pi, q_lim_franka_up, q_lim_franka_vel, 100, 100, q_lim_franka_torque];
+elseif strcmp(dynamics, 'simple')
+    lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -100, -100, -q_lim_franka_vel];
+    upper_bound = [inf, inf, pi, q_lim_franka_up, 100, 100, q_lim_franka_vel];
+end
 model.lb = lower_bound;
 model.ub = upper_bound;
 
-%%
-model.objective = @(z, p) costFunction(z, p);
-model.ineq = @(z, p) obstacleAvoidance(z, p);
+%% Costs, dynamics, obstacles
+if strcmp(dynamics, 'torques')
+    model.objective = @(z, p) costFunctionTorques(z, p);
+    model.ineq = @(z, p) obstacleAvoidanceTorques(z, p);
+    model.eq = @(z, p) transitionFunctionTorques(z, p);
+elseif strcmp(dynamics, 'simple')
+    model.objective = @(z, p) costFunctionSimple(z, p);
+    model.ineq = @(z, p) obstacleAvoidanceSimple(z, p);
+    model.eq = @(z, p) transitionFunctionSimple(z, p);
+end
+
 model.hu = inf(nbObstacles * nbSpheres, 1);
 model.hl = zeros(nbObstacles * nbSpheres, 1);
 
-%% Dynamics, i.e. equality constraints 
-%model.objective = @(z, p) objective_scenario_try(z, p);
-model.eq = @(z, p) transitionFunction(z, p);
 
-model.E = [eye(17, 17), zeros(17, 9)];
 
 %% Initial and final conditions
 % Initial condition on vehicle states
 
-model.xinitidx = 1:26; % use this to specify on which variables initial conditions are imposed
+if strcmp(dynamics, 'torques')
+    model.xinitidx = 1:26; % use this to specify on which variables initial conditions are imposed
+elseif strcmp(dynamics, 'simple')
+    model.xinitidx = 1:19; % use this to specify on which variables initial conditions are imposed
+end
 %model.xfinal = 0; % v final=0 (standstill), heading angle final=0?
 %model.xfinalidx = 6; % use this to specify on which variables final conditions are imposed
 

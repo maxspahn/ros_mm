@@ -1,4 +1,4 @@
-function x_next = transitionFunction(z, p)
+function x_next = transitionFunctionTorques(z, p)
 
 x_base = z(1:3);
 q = z(4:10);

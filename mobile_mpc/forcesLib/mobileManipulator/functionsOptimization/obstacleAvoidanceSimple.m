@@ -1,7 +1,7 @@
-function ineq = obstacleAvoidance(z, p)
+function ineq = obstacleAvoidanceSimple(z, p)
     x = z(1:3);
     q = z(4:10);
-    objects = p(21:end);
+    objects = p(11:end);
     
     spheres = computeSpheres(q, x);
     nbObstacles = size(objects, 1)/4;
