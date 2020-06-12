@@ -8,6 +8,7 @@
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
   <arg name="use_rviz" default="false"/>
+  <arg name="boxer_control_mode" default="diff_drive"/>
 
   <!--launch GAZEBO with own world configuration -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -23,6 +24,7 @@
 
   <include file="$(find mobile_manipulator)/launch/boxer_control.launch">
     <arg name="use_rviz" value="false"/>
+    <arg name="control_mode" value="$(arg boxer_control_mode)"/>
   </include>
 
     
