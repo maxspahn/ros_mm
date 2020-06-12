@@ -1,19 +1,10 @@
 #!/usr/bin/env python
 
-import os
-import sys
-
-sys.path.append(
-    os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "../forcesLib/mobileManipulator/"
-    )
-)
-
 import rospy
 import time
 import tf
 import numpy as np
-import mm_MPC_py
+from mobile_mpc import solve_MPC_mm
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Float64, Float64MultiArray
 from sensor_msgs.msg import JointState
@@ -46,10 +37,12 @@ class MPCController(object):
         self.goal = np.zeros(10)
         ex1Goal = np.array([5, 7, 0, 1, 1, 0, -1, 0, 2.5, 2])
         ex2Goal = np.zeros(10)
-        self.goal = ex2Goal
+        ex2Goal[6] = -1
+        ex2Goal[0] = 2
+        self.goal = ex1Goal
         self.time_horizon = 15
         self.PARAMS = {}
-        self.dt = 0.10
+        self.dt = 0.1
         self.problemSetup()
         time.sleep(1)
         print("MPC Node initialized")
@@ -91,7 +84,7 @@ class MPCController(object):
         """
         xinit = np.concatenate((self.curState, self.curU))
         x0 = np.tile(xinit, self.time_horizon)
-        obstacle = np.array([1.5, 3.5, 0, 3])
+        obstacle = np.array([1.5, 3.5, 0, 0.1])
         singleParam = np.concatenate((self.setup, self.goal, obstacle))
         print("Goal : ", self.goal)
         print("CurState : ", self.curState)
@@ -100,7 +93,7 @@ class MPCController(object):
         self.PARAMS["xinit"] = xinit
         self.PARAMS["x0"] = x0
         self.PARAMS["all_parameters"] = params
-        solution = mm_MPC_py.mm_MPC_solve(self.PARAMS)
+        solution = solve_MPC_mm.solve_MPC_mm(self.PARAMS)
         x02 = solution[0]["x02"]
         x_exp = x02[0:10]
         u_opt = x02[10:19]
@@ -120,6 +113,7 @@ class MPCController(object):
     def singleMPCStep(self):
         [x_exp, u_opt] = self.solve()
         self.curU = u_opt
+        print(u_opt) 
         self.publishVelocities(u_opt)
         time.sleep(self.dt)
 

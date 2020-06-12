@@ -30,7 +30,7 @@ base_pos = [0; 0; pi/4];
 arm_pos = [0; 0; 0; -1; 0.5; 1.5; 0];
 u_start = zeros(9, 1);
 start = [base_pos; arm_pos; u_start];
-goal_base_pos = [2; 2; pi/4];
+goal_base_pos = [5; 5; pi/4];
 goal_arm_pos = [1; 1; -0.5; -1.5; 0.5; 1; 0.2];
 
 goal = [goal_base_pos; goal_arm_pos];
@@ -38,7 +38,7 @@ goal = [goal_base_pos; goal_arm_pos];
 problem.xinit = start;
 problem.x0 = repmat(start, H, 1);
 
-obstacles = [35.6, 23.1, 0, 0.1];
+obstacles = [2, 2.5, 0, 1];
 
 % rectangle('Parent', ax2, 'Position', [obstacles(1) - obstacles(4) obstacles(2) - obstacles(4) 2 * obstacles(4) 2 * obstacles(4)], 'Curvature', 1);
 % ht1 = hgtransform('Parent', ax2);
@@ -62,7 +62,7 @@ while 1
     problem.x0 = repmat(output.x02, H, 1);
     
     disp(curState);
-    plot(ax2, t, curState, 'ro');
+    plot(ax2, curState(1), curState(2), 'ro');
     pause(0.1);
     
     oldError = error;
