@@ -35,14 +35,15 @@ class MPCController(object):
         self.curU = np.zeros(9)
         self.curState = np.zeros(10)
         self.goal = np.zeros(10)
-        ex1Goal = np.array([5, 7, 0, 1, 1, 0, -1, 0, 2.5, 2])
+        ex1Goal = np.array([9, 9, -1, 1, 1, 0, -1, 0, 2.5, 2])
         ex2Goal = np.zeros(10)
         ex2Goal[6] = -1
-        ex2Goal[0] = 2
+        ex2Goal[8] = 2
+        ex3Goal = np.array([9, 9, -1, 1, 1, 0, -1, 0, 2.5, 2])
         self.goal = ex1Goal
         self.time_horizon = 15
         self.PARAMS = {}
-        self.dt = 0.1
+        self.dt = 0.10
         self.problemSetup()
         time.sleep(1)
         print("MPC Node initialized")
@@ -72,7 +73,22 @@ class MPCController(object):
     def problemSetup(self):
         wheel_radius = 0.08
         wheel_distance = 0.544
+        self.genObstacles()
         self.setup = np.array([self.dt, wheel_radius, wheel_distance])
+
+    def genObstacles(self):
+        o0 = np.array([5, 5, 2, 1.5])
+        o1 = np.array([1, 2, 2, 1.5])
+        o2 = np.array([-0.5, 3.5, 2, 1.5])
+        o3 = np.array([-2, 5, 2, 1.5])
+        o4 = np.array([-3.5, 6.5, 2, 1.5])
+        o5 = np.array([-5, 6.5, 2, 1.5])
+        o6 = np.array([4, -2, 1, 1.5])
+        o7 = np.array([4, -3.5, 1, 1.5])
+        o8 = np.array([4, -5, 1, 1.5])
+        o9 = np.array([4, -6.5, 1, 1.5])
+        o10 = np.array([5.5, -6.5, 1, 1.5])
+        self.obstacles = np.tile(np.concatenate((o0, o1, o2, o3, o4, o6, o7, o8, o9, o10)), 5)
 
     def solve(self):
         """Solves the MPC problem for the current state
@@ -84,8 +100,7 @@ class MPCController(object):
         """
         xinit = np.concatenate((self.curState, self.curU))
         x0 = np.tile(xinit, self.time_horizon)
-        obstacle = np.array([1.5, 3.5, 0, 0.1])
-        singleParam = np.concatenate((self.setup, self.goal, obstacle))
+        singleParam = np.concatenate((self.setup, self.goal, self.obstacles))
         print("Goal : ", self.goal)
         print("CurState : ", self.curState)
         print("Difference : ", self.goal - self.curState)
@@ -123,7 +138,7 @@ class MPCController(object):
             oldError = error
             error = self.computeError()
             print(error)
-            if error < 0.1:
+            if error < 0.3:
                 break
             self.singleMPCStep()
         self.publishVelocities(np.zeros(9))
