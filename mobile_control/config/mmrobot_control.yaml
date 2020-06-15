@@ -136,7 +136,7 @@ joint_trajectory_controller:
   constraints:
     goal_time: 2.0
   state_publish_rate : 25
-  
+
 
 boxer_joint_publisher:
   type: "joint_state_controller/JointStateController"
@@ -199,4 +199,3 @@ left_wheel:
     p: 5.0
     i: 20.0
     i_clamp: 100
-

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="panda_transmission" params="robot_name load_hand hi:='EffortJointInterface'">
+    <xacro:macro name="panda_transmission" params="robot_name load_hand hi">
 
 
         <!-- Load Gazebo lib and set the robot namespace -->
