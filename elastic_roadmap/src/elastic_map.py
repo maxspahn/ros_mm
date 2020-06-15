@@ -14,26 +14,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from EuclideanConnector import EuclideanConnector
+from robotModel import RobotModel
+
 
 class DynamicGraph(object):
 
-    def __init__(self, dim, connector, maxDist=5.0):
+    def __init__(self, dim, connector, robotModel=RobotModel("mm"), maxDist=5.0):
         self.dim = dim
         self.nxGraph = nx.Graph()
         self.connector = connector
         self.index = 0;
         self.maxDist = maxDist
+        self.robotModel = robotModel
 
     def addNode(self, config):
         self.nxGraph.add_node(self.index, config=config)
         self.index += 1
         return self.index - 1
 
+    def isValidConfig(self, config):
+        return self.robotModel.isValidConfig(config)
+
     def removeNode(self, node):
         self.nxGraph.remove_node(node)
 
     def findAndSetConnections(self, node):
         for candidate in self.nxGraph.nodes:
+            if candidate == node:
+                continue
             dist = self.computeDistance(node, candidate)
             if dist < self.maxDist:
                 self.addEdge(node_a=node, node_b=candidate, dist=dist)
@@ -43,6 +51,19 @@ class DynamicGraph(object):
         config_b = self.nxGraph.nodes[node_b]['config']
         return self.connector.dist(config_a, config_b)
 
+    def createSample(self, baseMus=[0, 0, 0], baseSigmas=[0.5, 0.5, 0.3]):
+        mus = self.robotModel.getMeans()
+        sigmas = self.robotModel.getSigmas()
+        noValidConfigFound = True
+        while noValidConfigFound:
+            qs = np.array([])
+            for mu, sigma in zip(baseMus, baseSigmas):
+                qs = np.append(qs, np.random.normal(mu, sigma, 1)[0])
+            for mu, sigma in zip(mus, sigmas):
+                qs = np.append(qs, np.random.normal(mu, sigma, 1)[0])
+            noValidConfigFound = not(self.isValidConfig(qs))
+        return qs
+
     def addEdge(self, **kwargs):
         node_a = kwargs['node_a']
         node_b = kwargs['node_b']
@@ -50,7 +71,10 @@ class DynamicGraph(object):
             dist = kwargs['dist']
         else:
             dist = self.computeDistance(node_a, node_b)
-        self.nxGraph.add_edge(node_a, node_b, weight=dist)
+        if dist == -1:
+            print("No connection possible")
+        else:
+            self.nxGraph.add_edge(node_a, node_b, weight=dist)
 
     def removeEdge(self, node_a, node_b):
         self.nxGraph.remove_edge(node_a, node_b);
@@ -68,14 +92,19 @@ class DynamicGraph(object):
     def __str__(self):
         description = "Dynamic Graph with Connector : " + self.connector.name + "\n"
         for i in self.nxGraph.nodes:
-            description += str(i) + " : " + str(self.nxGraph.nodes[i]['config']) + "\n"
+            description += str(i) + " : "
+            for jointPos in self.nxGraph.nodes[i]['config']:
+                description += '{:.2f}'.format(jointPos) + ', '
+            description += '\n'
         for i in self.nxGraph.edges:
-            description += str(i) + " : " + str(self.nxGraph.edges[i]['weight']) + "\n"
+            description += str(i) + " : " + '{:.2f}'.format(self.nxGraph.edges[i]['weight']) + "\n"
         return(description)
 
 if __name__ == "__main__":
     eCon = EuclideanConnector("simpleEuclideanConnector");
-    dg = DynamicGraph(3, eCon)
+    mmModel = RobotModel("mm")
+    dg = DynamicGraph(3, eCon, mmModel)
+    print(dg.createSample())
     nodeId1 = dg.addNode(np.array([1.2, 3.2, -1.2]))
     nodeId2 = dg.addNode(np.array([5.1, 3.2, -1.2]))
     dg.addEdge(node_a=nodeId1, node_b=nodeId2)

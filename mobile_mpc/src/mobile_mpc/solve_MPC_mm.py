@@ -13,5 +13,14 @@ import time
 import numpy as np
 import mm_MPC_py
 
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+
+def enablePrint():
+    sys.stdout = sys.__stdout__
+
 def solve_MPC_mm(params):
-    return mm_MPC_py.mm_MPC_solve(params)
+    blockPrint()
+    res = mm_MPC_py.mm_MPC_solve(params)
+    enablePrint()
+    return res
