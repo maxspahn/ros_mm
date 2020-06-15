@@ -45,7 +45,7 @@ rad2deg = @(rad) rad/pi*180; % convert radians into degrees
 
 %% Problem dimensions
 model.N = 15;                                       % horizon length
-nbObstacles = 1;
+nbObstacles = 50;
 nbSpheres = 6;                                  % base + 5 for the arm
 model.nh = nbObstacles * nbSpheres;             % number of inequality constraint functions
 
@@ -69,14 +69,15 @@ q_lim_franka_low = [-2.8973, -1.7628, -2.8973, -3.0718, -2.8973, -0.0175, -2.897
 q_lim_franka_vel = [2.1750, 2.1750, 2.1750, 2.1750, 2.6100, 2.6100, 2.6100];
 q_lim_franka_torque = [87, 87, 87, 87, 12, 12, 12];
 q_lim_franka_acc = [15, 7.5, 10, 12.5, 15, 20, 20, 20];
+wheel_lim_vel = 5;
 
 % [x, y, theta, q u1, u2];
 if strcmp(dynamics, 'torques')
-    lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -q_lim_franka_vel, -100, -100, -q_lim_franka_torque];
-    upper_bound = [inf, inf, pi, q_lim_franka_up, q_lim_franka_vel, 100, 100, q_lim_franka_torque];
+    lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -q_lim_franka_vel, -wheel_lim_vel, -wheel_lim_vel, -q_lim_franka_torque];
+    upper_bound = [inf, inf, pi, q_lim_franka_up, q_lim_franka_vel, wheel_lim_vel, wheel_lim_vel, q_lim_franka_torque];
 elseif strcmp(dynamics, 'simple')
-    lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -100, -100, -q_lim_franka_vel];
-    upper_bound = [inf, inf, pi, q_lim_franka_up, 100, 100, q_lim_franka_vel];
+    lower_bound = [-inf, -inf, -pi, q_lim_franka_low, -wheel_lim_vel, -wheel_lim_vel, -q_lim_franka_vel];
+    upper_bound = [inf, inf, pi, q_lim_franka_up, wheel_lim_vel, wheel_lim_vel, q_lim_franka_vel];
 end
 model.lb = lower_bound;
 model.ub = upper_bound;

@@ -11,9 +11,9 @@ u = z(11:12);
 Wq = diag(ones(size(q, 1), 1) * 100);
 Wx = diag(ones(size(x_des, 1), 1) * 100);
 % Turning of rotation of base
-Wx(3, 3) = 0;
-Pu = diag(ones(size(u, 1), 1));
-Pqdot = diag(ones(size(q_dot, 1), 1));
+Wx(3, 3) = 1;
+Pu = diag(ones(size(u, 1), 1) * 0);
+Pqdot = diag(ones(size(q_dot, 1), 1) * 1);
 
 J = (x - x_des)' * Wx * (x - x_des) + ...
     (q - q_des)' * Wq * (q - q_des) + ...
