@@ -11,6 +11,6 @@
   <include file="$(find mobile_moveit)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true"/>
   </include>
-    
+
   <include file="$(find mobile_moveit)/launch/moveit_rviz.launch"/>
 </launch>
