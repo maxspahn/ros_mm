@@ -2,13 +2,15 @@ import numpy as np
 import time
 
 from mobile_mpc import solve_MPC_mm
+import obstacleArray
 
 class MPCConnectorMM(object):
 
-    def __init__(self, name, time_horizon, obstacles=[50, 50, 50, 0.2]):
+    def __init__(self, name, time_horizon, maxDist = 20, obstacles=obstacleArray.genDefaultObstacles()):
         self.name = name
         self.time_horizon = time_horizon
-        self.dt = 0.25
+        self.dt = 0.1
+        self.maxDist = maxDist
         self.obstacles = obstacles
         self.problemSetup()
 
@@ -38,10 +40,13 @@ class MPCConnectorMM(object):
         timeOfTravel = 0
         error = 100
         while True:
+            if timeOfTravel >= self.maxDist:
+                timeOfTravel = -1
+                break
             timeOfTravel += self.dt
             oldError = error
             error = self.computeError()
-            if error < 0.1:
+            if error < 0.4:
                 break
             self.singleMPCStep()
         return timeOfTravel
@@ -56,7 +61,7 @@ class MPCConnectorMM(object):
         """
         xinit = np.concatenate((self.curState, self.curU))
         x0 = np.tile(xinit, self.time_horizon)
-        singleParam = np.concatenate((self.setup, self.goal, self.obstacles))
+        singleParam = np.concatenate((self.setup, self.goal, self.obstacles.asVector()))
         params = np.tile(singleParam, self.time_horizon)
         self.PARAMS["xinit"] = xinit
         self.PARAMS["x0"] = x0
@@ -72,8 +77,8 @@ if __name__ == "__main__":
     config1 = np.zeros(10)
     config1[6] = -1
     config2 = np.zeros(10)
-    config2[6] = -2
-    config2[0] = 2
+    config2[6] = -1
+    config2[0] = 0
     con= MPCConnectorMM("mobileManipulatorMPC", 15)
     dist = con.dist(config1, config2)
     print(dist)
