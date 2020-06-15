@@ -14,6 +14,7 @@ import numpy as np
 from EuclideanConnector import EuclideanConnector
 from MPCConnectorMM import MPCConnectorMM
 from elastic_map import DynamicGraph
+from obstacleArray import genSimpleObstacles, genDefaultObstacles
 
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
@@ -22,18 +23,17 @@ def enablePrint():
     sys.stdout = sys.__stdout__
 
 if __name__ == "__main__":
-    blockPrint()
-    eCon = MPCConnectorMM("MPCConnector", 15);
+    eCon = MPCConnectorMM("MPCConnector", 15, maxDist = 8, obstacles=genSimpleObstacles());
     #eCon = EuclideanConnector("EucCon");
     dg = DynamicGraph(10, eCon, maxDist=50)
-    nodeId1 = dg.addNode(np.array([1.2, 3.2, -1.2, 0, 0, 0, 0, 0, 0, 0]))
-    nodeId2 = dg.addNode(np.array([5.1, 3.2, -1.2, 0, 0, 0, 0, 0, 0, 0]))
-    dg.addEdge(node_a=nodeId1, node_b=nodeId2)
-    nodeId3 = dg.addNode(np.array([-3.1, 1.4, -2, 0, -1, 0, 0, 0, 0, 0]))
-    dg.findAndSetConnections(nodeId3)
+    config = dg.createSample()
+    nodeId0 = dg.addNode(config)
+    for i in range(10):
+        print("Generate confiig and find connections")
+        config = dg.createSample(baseMus=config)
+        nodeId = dg.addNode(config)
+        dg.findAndSetConnections(nodeId)
+    print(dg)
     dg.plot()
-    dg.removeNode(nodeId2)
-    dg.plot()
-    #print(dg)
 
 
