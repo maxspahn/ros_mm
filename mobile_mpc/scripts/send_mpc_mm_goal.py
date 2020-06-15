@@ -9,7 +9,7 @@ def sendSimpleGoal():
     rospy.init_node("mpcGoalPublisher_mm")
     pub = rospy.Publisher("/mmrobot/mpc_goal", Float64MultiArray, queue_size=10)
     f = Float64MultiArray()
-    f.data = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    f.data = [0, 0, 0, 0, 0, 1, -1, 0, 2, 0]
     pub.publish(f)
 
 
