@@ -28,7 +28,6 @@ This package must be installed in the catkin_workspace.
 
 ### Usage
 Launch the gazebo simulation
-
 ```
 roslaunch mobile_manipulator mmrobot_gazebo.launch
 ```
@@ -39,20 +38,16 @@ roslaunch mobile_navigation mmrobot_navigation.launch
 ```
 
 Launch the navigation stack for the manipulator (the panda)
-This is only possible when the EffortJointInterface was selected during the gazebo
-startup.
 ```
 roslaunch mobile_moveit planning_execution.launch
 ```
 
-Testing from scripts is also possible. After launching the files above, you can test on the files in mobil_control/scrpts. In particular, yu can control the arm to a desired pose:
-
+Testing from scripts in mobile_control/scrpts is also possible after launching the files above. In particular, you can control the arm to a desired pose:
 ```
 rosrun mobile_control send_goal_arm.py 
 ```
 
 Or test the gripper which closes and re-opens after 3s:
-
 ```
 rosrun mobile_control gripper_example.py 
 ```
