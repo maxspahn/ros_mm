@@ -3,21 +3,33 @@ import time
 
 from mobile_mpc import solve_MPC_mm
 import obstacleArray
+from params import ParametersElasticMap
 
 class MPCConnectorMM(object):
 
-    def __init__(self, name, time_horizon, maxDist = 20, obstacles=obstacleArray.genDefaultObstacles()):
+    def __init__(self, name, params=ParametersElasticMap(), obstacles=obstacleArray.genDefaultObstacles()):
         self.name = name
-        self.time_horizon = time_horizon
-        self.dt = 0.1
-        self.maxDist = maxDist
+        self.time_horizon = params._timeHorizon
+        self.dt = params._dt
+        self.maxDist = params._maxDist
+        self.maxSpeed = params._maxSpeed
         self.obstacles = obstacles
         self.problemSetup()
 
     def dist(self, config1, config2):
         self.goal = config2
-        self.curState = config1
-        return self.planConnection()
+        self.start = config1
+        if self.isValidCandidate():
+            print("possible candidate")
+            return self.planConnection()
+        else:
+            return -1
+
+    def isValidCandidate(self):
+        euclDistanceBase = np.linalg.norm(self.goal[0:2] - self.start[0:2])
+        if (1.5 * euclDistanceBase/self.maxSpeed) > self.maxDist:
+            return False
+        return True
 
     def problemSetup(self):
         wheel_radius = 0.08
@@ -29,12 +41,12 @@ class MPCConnectorMM(object):
     def singleMPCStep(self):
         [x_exp, u_opt] = self.solve()
         self.curU = u_opt
-        self.curState = x_exp
+        self.start= x_exp
 
     def computeError(self):
         return np.linalg.norm(
-            self.curState[0:2] - self.goal[0:2]
-        ) + 0.5 * np.linalg.norm(self.curState[3:10] - self.goal[3:10])
+            self.start[0:2] - self.goal[0:2]
+        ) + 0.5 * np.linalg.norm(self.start[3:10] - self.goal[3:10])
 
     def planConnection(self):
         timeOfTravel = 0
@@ -54,12 +66,11 @@ class MPCConnectorMM(object):
     def solve(self):
         """Solves the MPC problem for the current state
 
-        :curState: actual robot state
         :returns: x_exp expected next state
                   u_opt optimal control input for next timestep
 
         """
-        xinit = np.concatenate((self.curState, self.curU))
+        xinit = np.concatenate((self.start, self.curU))
         x0 = np.tile(xinit, self.time_horizon)
         singleParam = np.concatenate((self.setup, self.goal, self.obstacles.asVector()))
         params = np.tile(singleParam, self.time_horizon)

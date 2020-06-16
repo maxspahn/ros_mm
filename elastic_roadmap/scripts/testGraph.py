@@ -14,6 +14,7 @@ import numpy as np
 from EuclideanConnector import EuclideanConnector
 from MPCConnectorMM import MPCConnectorMM
 from elastic_map import DynamicGraph
+from params import ParametersElasticMap
 from obstacleArray import genSimpleObstacles, genDefaultObstacles
 
 def blockPrint():
@@ -23,17 +24,19 @@ def enablePrint():
     sys.stdout = sys.__stdout__
 
 if __name__ == "__main__":
-    eCon = MPCConnectorMM("MPCConnector", 15, maxDist = 8, obstacles=genSimpleObstacles());
+    defParams = ParametersElasticMap()
+    eCon = MPCConnectorMM("MPCConnector", params=defParams, obstacles=genSimpleObstacles());
     #eCon = EuclideanConnector("EucCon");
-    dg = DynamicGraph(10, eCon, maxDist=50)
+    dg = DynamicGraph(eCon, params=defParams)
     config = dg.createSample()
     nodeId0 = dg.addNode(config)
     for i in range(10):
-        print("Generate confiig and find connections")
         config = dg.createSample(baseMus=config)
+        print("Generate confiig and find connections for config : ", config)
         nodeId = dg.addNode(config)
         dg.findAndSetConnections(nodeId)
     print(dg)
-    dg.plot()
+    dg.plot(short=False)
+    dg.saveGraph('../savedMaps/testGraph_4')
 
 

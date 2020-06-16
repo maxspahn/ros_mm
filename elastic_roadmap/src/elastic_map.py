@@ -2,12 +2,9 @@
 
 import os
 import sys
+import pickle
 
-sys.path.append(
-    os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "./"
-    )
-)
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "./"))
 
 import networkx as nx
 import numpy as np
@@ -15,73 +12,95 @@ import matplotlib.pyplot as plt
 
 from EuclideanConnector import EuclideanConnector
 from robotModel import RobotModel
+from params import ParametersElasticMap
 
 
 class DynamicGraph(object):
-
-    def __init__(self, dim, connector, robotModel=RobotModel("mm"), maxDist=5.0):
-        self.dim = dim
-        self.nxGraph = nx.Graph()
-        self.connector = connector
-        self.index = 0;
-        self.maxDist = maxDist
-        self.robotModel = robotModel
+    def __init__(self, connector, params=ParametersElasticMap(), robotModel=RobotModel("mm")):
+        self._variancesBase = params._variancesBase
+        self._dim = params._dim
+        self._nxGraph = nx.Graph()
+        self._connector = connector
+        self._index = 0
+        self._maxDist = params._maxDist
+        self._minDistBase = params._minDistBase
+        self._robotModel = robotModel
 
     def addNode(self, config):
-        self.nxGraph.add_node(self.index, config=config)
-        self.index += 1
-        return self.index - 1
+        self._nxGraph.add_node(self._index, config=config)
+        self._index += 1
+        return self._index - 1
+
+    def hasTooCloseNeighbor(self, config):
+        for node in self._nxGraph.nodes:
+            if np.linalg.norm(self._nxGraph.nodes[node]["config"][0:2] - config[0:2]) < self._minDistBase:
+                return True
+        return False
 
     def isValidConfig(self, config):
-        return self.robotModel.isValidConfig(config)
+        return (self._robotModel.isValidConfig(config) and not(self.hasTooCloseNeighbor(config)))
 
     def removeNode(self, node):
-        self.nxGraph.remove_node(node)
+        self._nxGraph.remove_node(node)
 
     def findAndSetConnections(self, node):
-        for candidate in self.nxGraph.nodes:
+        for candidate in self._nxGraph.nodes:
             if candidate == node:
                 continue
             dist = self.computeDistance(node, candidate)
-            if dist < self.maxDist:
+            if (dist != -1):
                 self.addEdge(node_a=node, node_b=candidate, dist=dist)
 
     def computeDistance(self, node_a, node_b):
-        config_a = self.nxGraph.nodes[node_a]['config']
-        config_b = self.nxGraph.nodes[node_b]['config']
-        return self.connector.dist(config_a, config_b)
+        config_a = self._nxGraph.nodes[node_a]["config"]
+        config_b = self._nxGraph.nodes[node_b]["config"]
+        return self._connector.dist(config_a, config_b)
 
-    def createSample(self, baseMus=[0, 0, 0], baseSigmas=[0.5, 0.5, 0.3]):
-        mus = self.robotModel.getMeans()
-        sigmas = self.robotModel.getSigmas()
+    def createSample(self, baseMus=[0, 0, 0]):
+        mus = self._robotModel.getMeans()
+        sigmas = self._robotModel.getSigmas()
         noValidConfigFound = True
         while noValidConfigFound:
             qs = np.array([])
-            for mu, sigma in zip(baseMus, baseSigmas):
+            for mu, sigma in zip(baseMus, self._variancesBase):
                 qs = np.append(qs, np.random.normal(mu, sigma, 1)[0])
             for mu, sigma in zip(mus, sigmas):
                 qs = np.append(qs, np.random.normal(mu, sigma, 1)[0])
-            noValidConfigFound = not(self.isValidConfig(qs))
+            noValidConfigFound = not (self.isValidConfig(qs))
         return qs
 
     def addEdge(self, **kwargs):
-        node_a = kwargs['node_a']
-        node_b = kwargs['node_b']
-        if 'dist' in kwargs.keys():
-            dist = kwargs['dist']
+        node_a = kwargs["node_a"]
+        node_b = kwargs["node_b"]
+        if "dist" in kwargs.keys():
+            dist = kwargs["dist"]
         else:
             dist = self.computeDistance(node_a, node_b)
         if dist == -1:
             print("No connection possible")
         else:
-            self.nxGraph.add_edge(node_a, node_b, weight=dist)
+            self._nxGraph.add_edge(node_a, node_b, weight=dist)
 
     def removeEdge(self, node_a, node_b):
-        self.nxGraph.remove_edge(node_a, node_b);
+        self._nxGraph.remove_edge(node_a, node_b)
+
+    def getPositionBase(self):
+        basePos = []
+        for i in self._nxGraph.nodes:
+            jointPos = self._nxGraph.nodes[i]["config"]
+            basePos.append(jointPos[0:2])
+        return basePos
 
     def plot(self, short=True):
         plt.plot()
-        nx.draw(self.nxGraph, with_labels=True, font_weight='bold')
+        pos = self.getPositionBase()
+        nx.draw(self._nxGraph, pos, with_labels=True, font_weight="bold")
+        labels = nx.get_edge_attributes(self._nxGraph, "weight")
+        formLabels = {
+            (key1, key2): "{:.1f}".format(value)
+            for (key1, key2), value in labels.items()
+        }
+        nx.draw_networkx_edge_labels(self._nxGraph, pos, edge_labels=formLabels)
         if short:
             plt.show(block=False)
             plt.pause(2)
@@ -90,18 +109,28 @@ class DynamicGraph(object):
             plt.show()
 
     def __str__(self):
-        description = "Dynamic Graph with Connector : " + self.connector.name + "\n"
-        for i in self.nxGraph.nodes:
+        description = "Dynamic Graph with Connector : " + self._connector.name + "\n"
+        for i in self._nxGraph.nodes:
             description += str(i) + " : "
-            for jointPos in self.nxGraph.nodes[i]['config']:
-                description += '{:.2f}'.format(jointPos) + ', '
-            description += '\n'
-        for i in self.nxGraph.edges:
-            description += str(i) + " : " + '{:.2f}'.format(self.nxGraph.edges[i]['weight']) + "\n"
-        return(description)
+            for jointPos in self._nxGraph.nodes[i]["config"]:
+                description += "{:.2f}".format(jointPos) + ", "
+            description += "\n"
+        for i in self._nxGraph.edges:
+            description += (
+                str(i)
+                + " : "
+                + "{:.2f}".format(self._nxGraph.edges[i]["weight"])
+                + "\n"
+            )
+        return description
+
+    def saveGraph(self, fileName):
+        with open(fileName, "wb") as outputFile:
+            pickle.dump(self, outputFile, pickle.HIGHEST_PROTOCOL)
+
 
 if __name__ == "__main__":
-    eCon = EuclideanConnector("simpleEuclideanConnector");
+    eCon = EuclideanConnector("simpleEuclideanConnector")
     mmModel = RobotModel("mm")
     dg = DynamicGraph(3, eCon, mmModel)
     print(dg.createSample())
@@ -115,5 +144,4 @@ if __name__ == "__main__":
     dg.removeNode(nodeId2)
     dg.plot()
     print(dg)
-
-
+    dg.saveGraph("testSave")
