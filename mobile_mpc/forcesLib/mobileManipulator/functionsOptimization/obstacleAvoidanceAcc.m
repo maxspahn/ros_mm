@@ -1,12 +1,11 @@
-function ineq = obstacleAvoidanceSimple(z, p)
+function ineq = obstacleAvoidanceAcc(z, p)
     x = z(1:3);
-    q = z(4:10);
-    slack = z(11);
-
+    q = z(6:12);
+    slack = z(13);
     %spheres = p(20:23);
     spheres = computeSpheres(q, x)';
 
-    objects = p(20:end);
+    objects = p(21:end);
     nbObstacles = size(objects, 1)/4;
     nbSpheres = size(spheres, 1)/4;
 %     
