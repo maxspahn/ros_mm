@@ -392,6 +392,20 @@ in the right frame w.r.t the ground. -->
 	<child link="stereo_right" />
 </joint>
 
+<link name="top_camera" />
+<joint name="top_camera_joint" type="fixed">
+	<origin xyz="0.1 0 0.1" rpy="0 0 0" />
+	<parent link="top_mount" />
+	<child link="top_camera" />
+</joint>
+
+<link name="depth_camera" />
+<joint name="depth_camera_joint" type="fixed">
+	<origin xyz="0.1 0 0.1" rpy="${-pi/2} 0 ${-pi/2}" />
+	<parent link="top_camera" />
+	<child link="depth_camera" />
+</joint>
+
 <!-- Sonar links to base link joints -->
 <link name="rear_left_sonar_link" />
 <joint name="rear_left_sonar_joint" type="fixed">
