@@ -44,10 +44,11 @@ deg2rad = @(deg) deg/180*pi; % convert degrees into radians
 rad2deg = @(rad) rad/pi*180; % convert radians into degrees
 
 %% Problem dimensions
-model.N = 12;                                       % horizon length
+model.N = 20;                                       % horizon length
 nbObstacles = 5;
-nbSpheres = 1;                                  % base + 5 for the arm
-model.nh = nbObstacles * nbSpheres;             % number of inequality constraint functions
+nbSpheres = 6;                                          % base + 5 for the arm
+nbSelfCollision = 1;
+model.nh = nbObstacles * nbSpheres + nbSelfCollision;   % number of inequality constraint functions
 
 if strcmp(dynamics, 'torques')
     model.nvar = 3 + 7 + 7 + 2 + 7;                     % number of variables [x, y, theta, q (size : 7), q_dot (size : 7), u1, u2, tau (size : 7)]
@@ -111,8 +112,8 @@ for i=1:model.N
     %% Upper/lower bounds For road boundaries
     model.hu{i} = [+inf, +inf,+inf, +inf,+inf, +inf];   
     model.hl{i} = [1, 1,1, 1,1, 1];
-    model.hu{i} = inf(nbObstacles * nbSpheres, 1);
-    model.hl{i} = zeros(nbObstacles * nbSpheres, 1);
+    model.hu{i} = inf(nbObstacles * nbSpheres + nbSelfCollision, 1);
+    model.hl{i} = zeros(nbObstacles * nbSpheres + nbSelfCollision, 1);
 end
 if strcmp(dynamics, 'torques')
 %     model.objective = @(z, p) costFunctionTorques(z, p);

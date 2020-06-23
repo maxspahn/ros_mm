@@ -35,8 +35,7 @@ if __name__ == "__main__":
         print("Generate confiig and find connections for config : ", config)
         nodeId = dg.addNode(config)
         dg.findAndSetConnections(nodeId)
-    print(dg)
     dg.plot(short=False)
-    dg.saveGraph('../savedMaps/testGraph_4')
+    dg.saveGraph('../savedMaps/testGraph')
 
 

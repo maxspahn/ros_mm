@@ -12,7 +12,8 @@
     <group if="$(eval control_mode == 'single_wheel')">
       <node name="controller_spawner" pkg="controller_manager" ns="/boxer" type="spawner" respawn="false" output="screen" args="
         left_wheel
-        right_wheel" />
+        right_wheel
+        boxer_joint_publisher" />
     </group>
 
     <!-- convert joint states to TF transforms for rviz, etc -->

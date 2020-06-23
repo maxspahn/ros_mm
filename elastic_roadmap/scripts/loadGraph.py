@@ -13,4 +13,8 @@ from mapLoader import DynamicGraphLoader
 if __name__ == "__main__":
     dgl = DynamicGraphLoader('../savedMaps/testGraph')
     dg = dgl.loadDynamicGraph()
-    dg.plot(short=False)
+    print(dg)
+    [length, path] = dg.findPath(1, 5)
+    for state in path:
+        goal = dg.getConfig(state)
+        print(goal)

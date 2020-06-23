@@ -36,6 +36,13 @@
   <node name="spawn_urdf" pkg="gazebo_ros" ns="mmrobot" type="spawn_model" args="-param robot_description -urdf -model mmrobot"/>
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param sphere_store_description -urdf -model sphereStore"/>
 
+  <node pkg="tf" type="static_transform_publisher" name="sphere_base" args="0.25 0 0.2 0 0 0 base_link sphere_base 10"/>
+  <node pkg="tf" type="static_transform_publisher" name="sphere_0" args="5 5 0 0 0 0 odom sphere_0 10"/>
+  <node pkg="tf" type="static_transform_publisher" name="sphere_1" args="1 4 0 0 0 0 odom sphere_1 10"/>
+  <node pkg="tf" type="static_transform_publisher" name="sphere_2" args="-5 1 0 0 0 0 odom sphere_2 10"/>
+  <node pkg="tf" type="static_transform_publisher" name="sphere_3" args="2.5 -4 0 0 0 0 odom sphere_3 10"/>
+  <node pkg="tf" type="static_transform_publisher" name="sphere_4" args="0 2 2 0 0 0 odom sphere_4 10"/>
+
   <include file="$(find mobile_manipulator)/launch/mmrobot_control.launch">
     <arg name="use_rviz" value="$(arg use_rviz)"/>
     <arg name="panda_hi" value="$(arg panda_hi)"/>

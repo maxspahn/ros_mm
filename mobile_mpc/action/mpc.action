@@ -1,0 +1,8 @@
+# goal definition
+std_msgs/Float64MultiArray goal
+---
+#result definition
+bool success
+---
+#result feedback
+int32 errorFlag

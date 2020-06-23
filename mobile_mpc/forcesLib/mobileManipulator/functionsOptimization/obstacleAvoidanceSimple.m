@@ -21,6 +21,12 @@ function ineq = obstacleAvoidanceSimple(z, p)
         end
     end
     
+    % Self Collision Avoidance between end effector and base
+    ee = nbSpheres - 1;
+    ee_sphere = spheres(4 * (nbSpheres - 1) + 1:(4 * (nbSpheres - 1) + 4));
+    dist = sqrt((spheres(1) - ee_sphere(1))^2 + (spheres(2) - ee_sphere(2))^2 + (spheres(3) - ee_sphere(3))^2);
+    ineq = [ineq; dist - spheres(4) - spheres(4 * (ee) + 4) + slack];
+    
 end
 
 function spheres = computeSpheres(q, x)
@@ -71,7 +77,6 @@ function spheres = computeSpheres(q, x)
     s_ee = [Tee_s(1:3, 4)', ree];
     
     spheres = [s_base, s_0, s_2, s_3, s_4, s_ee];
-    spheres = [s_base];
 end
 
 function Ts = forwardKinematicsExp(q, x)

@@ -40,7 +40,7 @@ class MPCController(object):
         ex2Goal[6] = -1
         ex2Goal[8] = 2
         ex3Goal = np.array([9, 9, -1, 1, 1, 0, -1, 0, 2.5, 2])
-        self.goal = ex1Goal
+        self.goal = self.curState
         self.time_horizon = 15
         self.PARAMS = {}
         self.dt = 0.10
@@ -63,6 +63,7 @@ class MPCController(object):
         self.curU[2:10] = np.array(jointStates.velocity[3:10])
 
     def goal_cb(self, goalData):
+        print("Goal received")
         self.goal = np.array(goalData.data)
 
     def computeError(self):

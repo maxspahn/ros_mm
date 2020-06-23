@@ -19,6 +19,7 @@
     <node name="controller_spawner_boxer" pkg="controller_manager" ns="/mmrobot" type="spawner" respawn="false" output="screen" args="
       left_wheel
       right_wheel"/>
+    <node name="odom_broadcaster" pkg="mobile_manipulator" ns="/mmrobot" type="odomTFBroadcasterBase" respawn="false" output="screen"/>
   </group>
 
   <group if="$(eval panda_hi == 'VelocityJointInterface')">
@@ -71,7 +72,7 @@
   <!-- rviz -->
   <group if="$(arg use_rviz)">
     <node pkg="rviz" type="rviz" name="rviz" required="true"
-          args="-d $(find mobile_navigation)/rviz/navigation.rviz"/>
+          args="-d $(find mobile_mpc)/config/mpc.rviz"/>
   </group>
 
 </launch>

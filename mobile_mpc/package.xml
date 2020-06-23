@@ -52,6 +52,8 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>mobile_manipulator</depend>
   <depend>mobile_control</depend>
+  <depend>actionlib_msgs</depend>
+  <exec_depend>message_generation</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

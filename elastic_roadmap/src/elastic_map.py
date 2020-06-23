@@ -16,7 +16,9 @@ from params import ParametersElasticMap
 
 
 class DynamicGraph(object):
-    def __init__(self, connector, params=ParametersElasticMap(), robotModel=RobotModel("mm")):
+    def __init__(
+        self, connector, params=ParametersElasticMap(), robotModel=RobotModel("mm")
+    ):
         self._variancesBase = params._variancesBase
         self._dim = params._dim
         self._nxGraph = nx.Graph()
@@ -26,35 +28,19 @@ class DynamicGraph(object):
         self._minDistBase = params._minDistBase
         self._robotModel = robotModel
 
-    def addNode(self, config):
-        self._nxGraph.add_node(self._index, config=config)
-        self._index += 1
-        return self._index - 1
-
     def hasTooCloseNeighbor(self, config):
         for node in self._nxGraph.nodes:
-            if np.linalg.norm(self._nxGraph.nodes[node]["config"][0:2] - config[0:2]) < self._minDistBase:
+            if (
+                np.linalg.norm(self._nxGraph.nodes[node]["config"][0:2] - config[0:2])
+                < self._minDistBase
+            ):
                 return True
         return False
 
     def isValidConfig(self, config):
-        return (self._robotModel.isValidConfig(config) and not(self.hasTooCloseNeighbor(config)))
-
-    def removeNode(self, node):
-        self._nxGraph.remove_node(node)
-
-    def findAndSetConnections(self, node):
-        for candidate in self._nxGraph.nodes:
-            if candidate == node:
-                continue
-            dist = self.computeDistance(node, candidate)
-            if (dist != -1):
-                self.addEdge(node_a=node, node_b=candidate, dist=dist)
-
-    def computeDistance(self, node_a, node_b):
-        config_a = self._nxGraph.nodes[node_a]["config"]
-        config_b = self._nxGraph.nodes[node_b]["config"]
-        return self._connector.dist(config_a, config_b)
+        return self._robotModel.isValidConfig(config) and not (
+            self.hasTooCloseNeighbor(config)
+        )
 
     def createSample(self, baseMus=[0, 0, 0]):
         mus = self._robotModel.getMeans()
@@ -68,6 +54,31 @@ class DynamicGraph(object):
                 qs = np.append(qs, np.random.normal(mu, sigma, 1)[0])
             noValidConfigFound = not (self.isValidConfig(qs))
         return qs
+
+    def findAndSetConnections(self, node, maxConnections=5):
+        connections = 0
+        for candidate in self._nxGraph.nodes:
+            if candidate == node:
+                continue
+            dist = self.computeDistance(node, candidate)
+            if dist != -1:
+                self.addEdge(node_a=node, node_b=candidate, dist=dist)
+                connections += 1
+                if connections == maxConnections:
+                    return
+
+    def computeDistance(self, node_a, node_b):
+        config_a = self._nxGraph.nodes[node_a]["config"]
+        config_b = self._nxGraph.nodes[node_b]["config"]
+        return self._connector.dist(config_a, config_b)
+
+    def addNode(self, config):
+        self._nxGraph.add_node(self._index, config=config)
+        self._index += 1
+        return self._index - 1
+
+    def removeNode(self, node):
+        self._nxGraph.remove_node(node)
 
     def addEdge(self, **kwargs):
         node_a = kwargs["node_a"]
@@ -90,6 +101,12 @@ class DynamicGraph(object):
             jointPos = self._nxGraph.nodes[i]["config"]
             basePos.append(jointPos[0:2])
         return basePos
+
+    def getConfig(self, node):
+        return self._nxGraph.nodes[node]["config"]
+
+    def findPath(self, node_a, node_b):
+        return nx.multi_source_dijkstra(self._nxGraph, {node_a}, node_b)
 
     def plot(self, short=True):
         plt.plot()

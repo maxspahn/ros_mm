@@ -6,10 +6,10 @@ class ParametersElasticMap(object):
         self,
         dt=0.5,
         minDistBase=2,
-        maxDist=20,
+        maxDist=30,
         maxSpeed=0.4,
         timeHorizon=15,
-        variancesBase=[3.5, 3.5, 0.5],
+        variancesBase=[4, 4, 0.5],
         varianceFactorJoints=0.5,
         dim=10
     ):
