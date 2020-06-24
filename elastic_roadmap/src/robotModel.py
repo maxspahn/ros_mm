@@ -10,9 +10,9 @@ class RobotModel(object):
             self.createMM()
 
     def createMM(self):
-        self.jointLimitsUp = np.array([2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525,
+        self.jointLimitsUp = np.array([2, 2, 3.14, 2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525,
 2.8973])
-        self.jointLimitsLow = np.array([-2.8973, -1.7628, -2.8973, -3.0718, -2.8973,
+        self.jointLimitsLow = np.array([-2, -2, -3.14, -2.8973, -1.7628, -2.8973, -3.0718, -2.8973,
 -0.0175, -2.8973])
         self.jointVelLimits = np.array([2.1750, 2.1750, 2.1750, 2.1750, 2.6100, 2.6100,
 2.6100])
@@ -28,9 +28,8 @@ class RobotModel(object):
         return self.jointStds
 
     def isValidConfig(self, config):
-        armConfig = config[3:10]
-        lowCheck = armConfig > self.jointLimitsLow
-        upCheck = armConfig < self.jointLimitsUp
+        lowCheck = config > self.jointLimitsLow
+        upCheck = config < self.jointLimitsUp
         return (upCheck.all() and lowCheck.all())
 
 if __name__ == "__main__":

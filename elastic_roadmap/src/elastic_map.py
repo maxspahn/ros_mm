@@ -24,7 +24,7 @@ class DynamicGraph(object):
         self._nxGraph = nx.Graph()
         self._connector = connector
         self._index = 0
-        self._maxDist = params._maxDist
+        self._maxTime = params._maxTime
         self._minDistBase = params._minDistBase
         self._robotModel = robotModel
 
@@ -45,15 +45,15 @@ class DynamicGraph(object):
     def createSample(self, baseMus=[0, 0, 0]):
         mus = self._robotModel.getMeans()
         sigmas = self._robotModel.getSigmas()
-        noValidConfigFound = True
-        while noValidConfigFound:
+        for i in range(20):
             qs = np.array([])
             for mu, sigma in zip(baseMus, self._variancesBase):
                 qs = np.append(qs, np.random.normal(mu, sigma, 1)[0])
-            for mu, sigma in zip(mus, sigmas):
+            for mu, sigma in zip(mus[3:10], sigmas[3:10]):
                 qs = np.append(qs, np.random.normal(mu, sigma, 1)[0])
-            noValidConfigFound = not (self.isValidConfig(qs))
-        return qs
+            if self.isValidConfig(qs):
+                return qs
+        return None
 
     def findAndSetConnections(self, node, maxConnections=5):
         connections = 0

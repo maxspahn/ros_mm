@@ -11,10 +11,12 @@ from elastic_map import DynamicGraph
 from mapLoader import DynamicGraphLoader
 
 if __name__ == "__main__":
-    dgl = DynamicGraphLoader('../savedMaps/testGraph')
+    dgl = DynamicGraphLoader('../savedMaps/square_center_4')
     dg = dgl.loadDynamicGraph()
     print(dg)
-    [length, path] = dg.findPath(1, 5)
+    [length, path] = dg.findPath(1, 9)
+    print(path)
     for state in path:
         goal = dg.getConfig(state)
         print(goal)
+    dg.plot(short=False)
