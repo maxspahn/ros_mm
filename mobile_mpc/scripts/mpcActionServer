@@ -46,6 +46,8 @@ class MPCAction(object):
         self.dt = 0.4
         self.rate = rospy.Rate(1/self.dt)
         self.problemSetup()
+        self.maxError = 0.4
+        self.errorWeights = np.array([1, 0.5])
 
         self._action_name = name
         self._as = actionlib.SimpleActionServer(
@@ -68,6 +70,10 @@ class MPCAction(object):
         rospy.loginfo("Executing MPC Action")
 
         self.goal = goal.goal.data
+        self.errorWeights = goal.errorWeights.data
+        self.maxError = goal.maxError.data
+        self.weights = np.array(goal.mpcWeights.data)
+        print(self.weights)
 
         error = 100
         while True:
@@ -79,7 +85,7 @@ class MPCAction(object):
                 break
             if error < 1:
                 self.weights = self.weights * 1.1
-            if error < 0.5:
+            if error < self.maxError:
                 success = True
                 break
             exitFlag = self.singleMPCStep()
@@ -96,8 +102,10 @@ class MPCAction(object):
         # publish the feedback
         self._as.publish_feedback(self._feedback)
 
+        self._result.finalState = Float64MultiArray()
         if success:
             self._result.success = True
+            self._result.finalState.data = self.curState
             rospy.loginfo("%s: Succeeded" % self._action_name)
             self._as.set_succeeded(self._result)
         else:
@@ -111,9 +119,9 @@ class MPCAction(object):
         self.curU[0:2] = np.array(jointStates.velocity[10:12])
 
     def computeError(self):
-        return np.linalg.norm(
+        return self.errorWeights[0] *np.linalg.norm(
             self.curState[0:2] - self.goal[0:2]
-        ) + 0.5 * np.linalg.norm(self.curState[2:10] - self.goal[2:10])
+        ) + self.errorWeights[1] * np.linalg.norm(self.curState[2:10] - self.goal[2:10])
 
     def problemSetup(self):
         wheel_radius = 0.08
@@ -122,7 +130,7 @@ class MPCAction(object):
         self.x0 = np.zeros(self.nbVar * self.time_horizon)
         self.xinit = np.zeros(20)
         # q, x, o, slack, u, qdot,
-        self.weights = np.array([10.0, 100.0, 10.0, 100000.0, 10.0, 100.0])
+        self.weights = np.array([10.0, 10.0, 10.0, 10000000.0, 10.0, 100.0])
         nbObstacles = 5
         self.obstacles = np.ones(nbObstacles * 4) * -100
 

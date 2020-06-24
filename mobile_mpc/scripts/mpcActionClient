@@ -6,7 +6,7 @@ import rospy
 import actionlib
 import numpy as np
 
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Float64MultiArray, Float64
 
 # Brings in the messages used by the fibonacci action, including the
 # goal message and the result message.
@@ -16,28 +16,40 @@ import mobile_mpc.msg
 def mpc_client():
     # Creates the SimpleActionClient, passing the type of the action
     # (FibonacciAction) to the constructor.
-    client = actionlib.SimpleActionClient(
-        "mpc", mobile_mpc.msg.mpcAction
-    )
+    client = actionlib.SimpleActionClient("mpc", mobile_mpc.msg.mpcAction)
 
     # Waits until the action server has started up and started
     # listening for goals.
     client.wait_for_server()
 
     # Creates a goal to send to the action server.
+    errorWeights = Float64MultiArray()
+    errorWeights.data = np.array([1, 0.5])
+    myMaxError = Float64()
+    myMaxError.data = 0.5
+    myMPCWeights = Float64MultiArray()
+    myMPCWeights.data = np.array([10.0, 100.0, 1.0, 10000000.0, 5.0, 10.0])
     goals = []
     goalData1 = Float64MultiArray()
-    goalData1.data = np.array([-2,-2, 0, 1 , 0 ,0 ,-1, 0, 1, 0])
+    goalData1.data = np.array([-2, -2, 0, 1, 0, 0, -1, 0, 1, 0])
     goals.append(goalData1)
     goalData2 = Float64MultiArray()
-    goalData2.data = np.array([3, 3, -1, 1 , 0 ,0 ,-1, 0, 1, 0])
+    goalData2.data = np.array([3, 3, -1, 1, 0, 0, -1, 0, 1, 0])
     goals.append(goalData2)
     goalData3 = Float64MultiArray()
-    goalData3.data = np.array([1, 7, -1, 1 , -1 ,0 ,-1, 0, 1, 0])
+    goalData3.data = np.array([1, 7, -1, 1, -1, 0, -1, 0, 1, 0])
+    goals.append(goalData3)
+    goalData3 = Float64MultiArray()
+    goalData3.data = np.array([0, 0, 0, 1, -1, 0, -1, 0, 1, 0])
     goals.append(goalData3)
 
     for oneGoal in goals:
-        goal = mobile_mpc.msg.mpcGoal(goal= oneGoal)
+        goal = mobile_mpc.msg.mpcGoal(
+            goal=oneGoal,
+            errorWeights=errorWeights,
+            maxError=myMaxError,
+            mpcWeights=myMPCWeights,
+        )
 
         # Sends the goal to the action server.
         client.send_goal(goal)
