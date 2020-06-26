@@ -55,10 +55,18 @@ class DynamicGraph(object):
                 return qs
         return None
 
-    def findAndSetConnections(self, node, maxConnections=5):
+    def findAndSetConnections(self, node, maxConnections=5, maxDistBase=5):
         connections = 0
         for candidate in self._nxGraph.nodes:
             if candidate == node:
+                continue
+            if (
+                np.linalg.norm(
+                    self._nxGraph.nodes[candidate]["config"][0:2]
+                    - self._nxGraph.nodes[node]["config"][0:2]
+                )
+                > maxDistBase
+            ):
                 continue
             dist = self.computeDistance(node, candidate)
             if dist != -1:
@@ -95,11 +103,20 @@ class DynamicGraph(object):
     def removeEdge(self, node_a, node_b):
         self._nxGraph.remove_edge(node_a, node_b)
 
+    def cleanGraph(self):
+        rmNodes = []
+        for node in self._nxGraph.nodes:
+            print(list(self._nxGraph.neighbors(node)))
+            if len(list(self._nxGraph.neighbors(node))) == 0:
+                rmNodes.append(node)
+        for rmNode in rmNodes:
+            self.removeNode(rmNode)
+
     def getPositionBase(self):
-        basePos = []
+        basePos = [None] * 100
         for i in self._nxGraph.nodes:
             jointPos = self._nxGraph.nodes[i]["config"]
-            basePos.append(jointPos[0:2])
+            basePos[i] = jointPos[0:2]
         return basePos
 
     def getConfig(self, node):

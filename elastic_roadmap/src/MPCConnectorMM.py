@@ -5,9 +5,14 @@ from mobile_mpc import solve_MPC_mm
 import obstacleArray
 from params import ParametersElasticMap
 
-class MPCConnectorMM(object):
 
-    def __init__(self, name, params=ParametersElasticMap(), obstacles=obstacleArray.genDefaultObstacles()):
+class MPCConnectorMM(object):
+    def __init__(
+        self,
+        name,
+        params=ParametersElasticMap(),
+        obstacles=obstacleArray.genDefaultObstacles(),
+    ):
         self.name = name
         self.time_horizon = params._timeHorizon
         self.dt = params._dt
@@ -26,8 +31,8 @@ class MPCConnectorMM(object):
         self.goal = config2
         self.start = config1
         print("Computing distance between")
-        print("Start : ", self.start[0] ,self.start[1])
-        print("Goal: ", self.goal[0] ,self.goal[1])
+        print("Start : ", self.start[0], self.start[1])
+        print("Goal: ", self.goal[0], self.goal[1])
         if self.isValidCandidate():
             return self.planConnection()
         else:
@@ -35,7 +40,7 @@ class MPCConnectorMM(object):
 
     def isValidCandidate(self):
         euclDistanceBase = np.linalg.norm(self.goal[0:2] - self.start[0:2])
-        if (1.5 * euclDistanceBase/self.maxSpeed) > self.maxTime:
+        if (1.5 * euclDistanceBase / self.maxSpeed) > self.maxTime:
             return False
         return True
 
@@ -46,17 +51,18 @@ class MPCConnectorMM(object):
         self.x0 = np.zeros(self.nbVar * self.time_horizon)
         self.xinit = np.zeros(20)
         # q, x, o, slack, u, qdot,
-        self.weights = np.array([10.0, 1000.0, 1.0, 100000.0, 1.0, 10.0])
+        self.weights = np.array([10.0, 1000.0, 1.0, 1000000.0, 1.0, 10.0])
 
     def singleMPCStep(self):
-        [x_exp, u_opt] = self.solve()
+        [x_exp, u_opt, slack] = self.solve()
         self.curU = u_opt
-        self.start= x_exp
+        self.start = x_exp
+        return slack
 
     def computeError(self):
-        return np.linalg.norm(
-            self.start[0:2] - self.goal[0:2]
-        ) + 0.5 * np.linalg.norm(self.start[3:10] - self.goal[3:10])
+        return np.linalg.norm(self.start[0:2] - self.goal[0:2]) + 0.5 * np.linalg.norm(
+            self.start[3:10] - self.goal[3:10]
+        )
 
     def planConnection(self):
         timeOfTravel = 0
@@ -68,9 +74,14 @@ class MPCConnectorMM(object):
             timeOfTravel += self.dt
             oldError = error
             error = self.computeError()
-            if error < 0.2:
+            # print("time of travel : ", timeOfTravel)
+            # print("Error : ", error)
+            if error < 0.5:
                 break
-            self.singleMPCStep()
+            slack = self.singleMPCStep()
+            if slack > 0.001:
+                timeOfTravel = -1
+                break
         return timeOfTravel
 
     def solve(self):
@@ -82,7 +93,9 @@ class MPCConnectorMM(object):
         """
         xinit = np.concatenate((self.start, self.slack, self.curU))
         x0 = np.tile(xinit, self.time_horizon)
-        singleParam = np.concatenate((self.setup, self.goal, self.weights, self.obstacles.asVector()))
+        singleParam = np.concatenate(
+            (self.setup, self.goal, self.weights, self.obstacles.asVector())
+        )
         params = np.tile(singleParam, self.time_horizon)
         self.PARAMS["xinit"] = xinit
         self.PARAMS["x0"] = x0
@@ -90,8 +103,10 @@ class MPCConnectorMM(object):
         solution = solve_MPC_mm.solve_MPC_mm(self.PARAMS)
         x02 = solution[0]["x02"]
         x_exp = x02[0:10]
+        slack = x02[10]
+        # print("Slack : ", slack)
         u_opt = x02[11:20]
-        return [x_exp, u_opt]
+        return [x_exp, u_opt, slack]
 
 
 if __name__ == "__main__":
@@ -100,6 +115,6 @@ if __name__ == "__main__":
     config2 = np.zeros(10)
     config2[6] = -1
     config2[0] = 0
-    con= MPCConnectorMM("mobileManipulatorMPC")
+    con = MPCConnectorMM("mobileManipulatorMPC")
     dist = con.dist(config1, config2)
     print(dist)

@@ -24,15 +24,16 @@ def mpc_client():
 
     # Creates a goal to send to the action server.
     errorWeights = Float64MultiArray()
-    errorWeights.data = np.array([1, 0.5])
+    errorWeights.data = np.array([1.0, 1.0, 0.5])
     myMaxError = Float64()
     myMaxError.data = 0.5
     myMPCWeights = Float64MultiArray()
-    myMPCWeights.data = np.array([10.0, 100.0, 1.0, 10000000.0, 5.0, 10.0])
+    myMPCWeights.data = np.array([10.0, 10000000.0, 1.0, 1000.0, 1.0, 1.0])
     goals = []
     goalData1 = Float64MultiArray()
-    goalData1.data = np.array([-2, -2, 0, 1, 0, 0, -1, 0, 1, 0])
+    goalData1.data = np.array([5, -1, 0, 1, 0, 0, -1, 0, 1, 0])
     goals.append(goalData1)
+    """
     goalData2 = Float64MultiArray()
     goalData2.data = np.array([3, 3, -1, 1, 0, 0, -1, 0, 1, 0])
     goals.append(goalData2)
@@ -42,6 +43,7 @@ def mpc_client():
     goalData3 = Float64MultiArray()
     goalData3.data = np.array([0, 0, 0, 1, -1, 0, -1, 0, 1, 0])
     goals.append(goalData3)
+    """
 
     for oneGoal in goals:
         goal = mobile_mpc.msg.mpcGoal(
@@ -58,7 +60,9 @@ def mpc_client():
         client.wait_for_result()
 
         # Prints out the result of executing the action
-        print(client.get_result())
+        result = client.get_result()
+        print("Result:", result.success)
+        print("Final State : ", result.finalState.data)
     return client.get_result()  # A FibonacciResult
 
 
@@ -68,6 +72,5 @@ if __name__ == "__main__":
         # publish and subscribe over ROS.
         rospy.init_node("mpc_client_node")
         result = mpc_client()
-        print("Result:", result)
     except rospy.ROSInterruptException:
         print("program interrupted before completion")

@@ -35,19 +35,19 @@ class MPCAction(object):
         )
 
         self.curU = np.zeros(9)
-        self.curState = np.zeros(10)
+        self.curState = np.zeros(19)
         self.goal = np.zeros(10)
 
+
         self.time_horizon = 20
-        self.nbVar = 20
+        self.nbVar = 29
         self.slackVar = np.zeros(1)
         self.PARAMS = {}
         self.dt = 0.4
-        self.rate = rospy.Rate(1 / self.dt)
-        self.rate.sleep()
+        self.rate = rospy.Rate(1/self.dt)
         self.problemSetup()
         self.maxError = 0.4
-        self.errorWeights = np.array([1.0, 1.0, 0.5])
+        self.errorWeights = np.array([1, 0.5])
 
         self._action_name = name
         self._as = actionlib.SimpleActionServer(
@@ -73,14 +73,12 @@ class MPCAction(object):
         self.errorWeights = goal.errorWeights.data
         self.maxError = goal.maxError.data
         self.weights = np.array(goal.mpcWeights.data)
-        print(self.weights)
 
         error = 100
         while True:
             oldError = error
             error = self.computeError()
             rospy.loginfo("Current error: %1.5f", error)
-            print((self.curState - self.goal))
             if error > 1.5 * oldError:
                 success = False
                 break
@@ -115,61 +113,60 @@ class MPCAction(object):
             self._as.set_succeeded(self._result)
 
     def jointState_cb(self, jointStates):
-        self.curState[3:10] = np.array(jointStates.position[3:10])
-        self.curU[2:9] = np.array(jointStates.velocity[3:10])
-        self.curU[0:2] = np.array(jointStates.velocity[10:12])
+        self.curState[5:12] = np.array(jointStates.position[3:10])
+        self.curState[3:5] = np.array(jointStates.velocity[10:12])
+        self.curState[12:19] = np.array(jointStates.velocity[3:10])
 
     def computeError(self):
-        return (
-            self.errorWeights[0] * np.linalg.norm(self.curState[0:2] - self.goal[0:2])
-            + self.errorWeights[1] * np.linalg.norm(self.curState[2] - self.goal[2])
-            + self.errorWeights[2]
-            * np.linalg.norm(self.curState[3:10] - self.goal[3:10])
-        )
+        return self.errorWeights[0] *np.linalg.norm(
+            self.curState[0:2] - self.goal[0:2]
+        ) + self.errorWeights[1] * np.linalg.norm(self.curState[2:10] - self.goal[2:10])
 
     def problemSetup(self):
         wheel_radius = 0.08
         wheel_distance = 0.544
         self.setup = np.array([self.dt, wheel_radius, wheel_distance])
         self.x0 = np.zeros(self.nbVar * self.time_horizon)
-        self.xinit = np.zeros(20)
+        self.xinit = np.zeros(self.nbVar)
         # q, x, o, slack, u, qdot,
-        self.weights = np.array([10.0, 10.0, 10.0, 10000000.0, 10.0, 100.0])
-        nbObstacles = 100
+        self.weights = np.array([10.0, 10.0, 10.0, 10000000.0, 10.0, 100.0, 1.0, 1.0])
+        nbObstacles = 5
         self.obstacles = np.ones(nbObstacles * 4) * -100
-        self.getObstacles()
 
-    def getState(self):
+    def getObstacles(self):
         try:
-            (tBase, rotBase) = self.tfListener.lookupTransform(
-                "/odom", "base_link", rospy.Time(0)
-            )
+            (tBase, rotBase) = self.tfListener.lookupTransform('/odom', 'base_link', rospy.Time(0))
+            (to0, r) = self.tfListener.lookupTransform('/odom', 'sphere_0', rospy.Time(0))
+            (to1, r) = self.tfListener.lookupTransform('/odom', 'sphere_1', rospy.Time(0))
+            (to2, r) = self.tfListener.lookupTransform('/odom', 'sphere_2', rospy.Time(0))
+            (to3, r) = self.tfListener.lookupTransform('/odom', 'sphere_3', rospy.Time(0))
+            (to4, r) = self.tfListener.lookupTransform('/odom', 'sphere_4', rospy.Time(0))
             curPos = np.array(tBase)
             euler = tf.transformations.euler_from_quaternion(rotBase)
             curOri = np.array([euler[2]])
             self.curState[0:3] = np.concatenate((curPos[0:2], curOri))
-        except (
-            tf.LookupException,
-            tf.ConnectivityException,
-            tf.ExtrapolationException,
-        ):
+
+            to0.append(1.0)
+            to1.append(1.0)
+            to2.append(1.0)
+            to3.append(1.0)
+            to4.append(1.0)
+            self.obstacles[0:4] = to0
+            self.obstacles[4:8] = to1
+            self.obstacles[8:12] = to2
+            self.obstacles[12:16] = to3
+            self.obstacles[16:20] = to4
+
+        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             print("Error with tf listener")
 
-    def getObstacles(self):
-        for i in range(84):
-            frameName = "sphere_" + str(i)
-            (to, r) = self.tfListener.lookupTransform("odom", frameName ,rospy.Time(0))
-            to.append(0.2)
-            self.obstacles[i * 4: i * 4 + 4] = to
 
     def solve(self):
         self.getState()
         x0 = np.concatenate((self.curState, self.slackVar, self.curU))
         self.xinit = x0
         self.x0 = np.tile(x0, self.time_horizon)
-        singleParam = np.concatenate(
-            (self.setup, self.goal, self.weights, self.obstacles)
-        )
+        singleParam = np.concatenate((self.setup, self.goal, self.weights, self.obstacles))
         params = np.tile(singleParam, self.time_horizon)
         self.PARAMS["xinit"] = self.xinit
         self.PARAMS["x0"] = self.x0
@@ -192,24 +189,23 @@ class MPCAction(object):
         # Read states and input at time k
         [output, exitFlag] = self.solve()
         # Take solution for time k+1
-        x_exp = output["x02"][0:12]
-        u_opt_wheels = output["x02"][11:13]
-        u_opt_arm = output["x02"][13:20]
-        print(u_opt_wheels)
-        self.slackVar[0] = output["x02"][10]
+        u_opt_wheels = output["x02"][3:5]
+        u_opt_arm = output["x02"][12:19]
+        self.slackVar[0] = output["x02"][19]
         newx0 = []
         for i in range(2, self.time_horizon + 1):
             key = "x" + str(i).zfill(2)
+            print(output[key][12:19])
             newx0 = np.concatenate((newx0, output[key]))
-            if i == self.time_horizon:
+            if i == self.time_horizon :
                 newx0 = np.concatenate((newx0, output[key]))
 
         self.x0 = np.array(newx0)
         self.rate.sleep()
         now = rospy.get_rostime()
+        self.curU = output["x02"][20:29]
         self.publishVelocities(u_opt_wheels, u_opt_arm)
         return exitFlag
-
 
 if __name__ == "__main__":
     rospy.init_node("mpc")

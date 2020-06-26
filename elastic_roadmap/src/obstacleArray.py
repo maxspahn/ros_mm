@@ -20,11 +20,11 @@ class ObstacleArray(object):
 
 def genDefaultObstacles():
     myObs = ObstacleArray(5)
-    myObs.setObstacle(0, np.array([5, 5, 2, 1.5]))
-    myObs.setObstacle(1, np.array([1, 2, 2, 1.5]))
-    myObs.setObstacle(2, np.array([-0.5, 3.5, 2, 1.5]))
-    myObs.setObstacle(3, np.array([-2, 5, 2, 1.5]))
-    myObs.setObstacle(4, np.array([-3.5, 6.5, 2, 1.5]))
+    myObs.setObstacle(0, np.array([5, 5, 0, 1]))
+    myObs.setObstacle(1, np.array([1, 4, 0, 1]))
+    myObs.setObstacle(2, np.array([-5, 1, 0, 1]))
+    myObs.setObstacle(3, np.array([2.5, -4, 0, 2]))
+    myObs.setObstacle(4, np.array([0, 2, 2, 1]))
     return myObs
 
 def genSimpleObstacles():

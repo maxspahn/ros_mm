@@ -1,0 +1,9 @@
+function ineq = planeCollisionAvoidance(plane, sphere)
+    b = plane(7);
+    p = sphere(1:3);
+    normal = plane(1:3) / (sqrt(plane(1)^2 + plane(2)^2 + plane(3)^2));
+    dist = sqrt((((p(1) - plane(4)) * normal(1)) + ((p(2) - plane(5)) * normal(2)) + ((p(3) - plane(6)) * normal(3)))^2);
+    pI = p - dist * normal;
+    dist2 = sqrt((plane(4) - pI(1))^2 + (plane(5) - pI(2))^2 + (plane(6) - pI(3))^2);
+    s = 1 / (1 + exp(-10 * (b + sphere(4) - dist2)));
+    ineq =  sqrt(dist^2) - sphere(4) * s;

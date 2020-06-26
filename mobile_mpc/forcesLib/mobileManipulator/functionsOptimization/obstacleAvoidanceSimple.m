@@ -6,9 +6,11 @@ function ineq = obstacleAvoidanceSimple(z, p)
     %spheres = p(20:23);
     spheres = computeSpheres(q, x)';
 
-    objects = p(20:end);
+    objects = p(26:end);
     nbObstacles = size(objects, 1)/4;
     nbSpheres = size(spheres, 1)/4;
+    nbPlanes = 1;
+    plane = p(20:26);
 %     
 %     nbSpheres = size(spheres, 1);
     ineq = [];
@@ -18,6 +20,13 @@ function ineq = obstacleAvoidanceSimple(z, p)
                     (spheres(4 * (j - 1) + 2) - objects(4 * (i - 1) + 2))^2 +...
                     (spheres(4 * (j - 1) + 3) - objects(4 * (i - 1) + 3))^2);
             ineq = [ineq; dist - spheres(4 * (j - 1) + 4) - objects(4 * (i - 1) + 4) + slack];
+        end
+    end
+    
+    for i=1:nbPlanes
+        for j = 1:nbSpheres
+            d = planeCollisionAvoidance(plane, spheres(4 * (i - 1) + 1: 4 * (i -1 + 4)));
+            ineq = [ineq; d];
         end
     end
     

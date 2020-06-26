@@ -9,7 +9,7 @@ class ParametersElasticMap(object):
         maxTime=30,
         maxSpeed=0.4,
         timeHorizon=20,
-        variancesBase=[2, 2, 0.5],
+        variancesBase=[10, 10, 0.5],
         varianceFactorJoints=0.5,
         dim=10
     ):

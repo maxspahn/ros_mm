@@ -12,7 +12,7 @@ x_des = p(4:6);
 q_des = p(7:13);
 x_base_next = [x_base(1) + r/2 * (u(1) + u(2)) * cos(x_base(3)) * dt;
     x_base(2) + r/2 * (u(1) + u(2)) * sin(x_base(3)) * dt;
-    x_base(3) + r/L * (u(1) - u(2)) * dt];
+    x_base(3) + r/(2 * L) * (- u(1) + u(2)) * dt];
 q_next = q + dt * q_dot;
 
 x = z(1:10);
