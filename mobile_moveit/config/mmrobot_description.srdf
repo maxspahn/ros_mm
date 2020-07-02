@@ -17,7 +17,16 @@
         <joint name="mmrobot_joint5" />
         <joint name="mmrobot_joint6" />
         <joint name="mmrobot_joint7" />
-        <chain base_link="mmrobot_link0" tip_link="mmrobot_link8" />
+	<chain base_link="mmrobot_link0" tip_link="mmrobot_link8" />
+    </group>
+
+    <group name="base">
+      <joint name="world_joint"/>
+    </group>
+
+    <group name="whole_body">
+      <group name="base"/>
+      <group name="arm_group"/>
     </group>
     <group name="hand">
         <link name="mmrobot_hand" />
@@ -49,7 +58,10 @@
         <joint name="mmrobot_finger_joint2" value="0.0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="hand" parent_link="mmrobot_link8" group="hand" />
+    <end_effector name="hand" parent_link="mmrobot_link8" group="arm_group" />
+
+    <virtual_joint name="world_joint" type="planar" parent_frame="odom" child_link="base_link" />
+    <passive_joint name="world_joint" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="chassis_link" link2="extrusion1" reason="Never" />
     <disable_collisions link1="chassis_link" link2="extrusion2" reason="Never" />
