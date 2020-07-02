@@ -1,5 +1,5 @@
 <launch>
-  <arg name="control_file"     default="control_joystick.py"/>
+  <arg name="control_file"     default="control_joystick_vel.py"/>
   <arg name="control_mode" default="$* rosparam get /panda_controller"/>
 
   <node pkg="joy" type="joy_node" name="joy_stick_node" output="screen"/>

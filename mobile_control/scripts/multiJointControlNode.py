@@ -27,7 +27,6 @@ Float64MultiArray, self.multijoint_callback)
 
     def runNode(self):
         rospy.spin()
-        pass
 
 if __name__ == "__main__":
     try:

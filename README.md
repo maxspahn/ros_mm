@@ -51,3 +51,11 @@ Or test the gripper which closes and re-opens after 3s:
 ```
 rosrun mobile_control gripper_example.py 
 ```
+
+### Controlling with a game controller
+In some cases it is useful to test the controller with a game controller.
+It has to be plugged in before you start the roscore node.
+```
+roslaunch mobile_manipulator mmrobot_gazebo.launch panda_hi:="VelocityJointInterface" boxer_control_mode:="diff_drive"
+roslaunch mobile_navigation teleop.launch
+```

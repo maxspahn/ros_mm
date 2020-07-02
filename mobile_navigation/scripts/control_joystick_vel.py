@@ -25,6 +25,7 @@ class ControllerNode():
 
     def __init__(self):
         rospy.init_node('controller_node', anonymous=True)
+        self.rate = rospy.Rate(10)
         self.joySub = rospy.Subscriber("joy", Joy, self.joystick_listener_callback)
         self.jointStatesSub = rospy.Subscriber("mmrobot/joint_states", JointState,
 self.joint_state_listener_callback)
@@ -46,7 +47,10 @@ self.joint_state_listener_callback)
         self.jointTarget.data[self.activeJoint] += 0.01 * data.axes[5]
         self.baseVel.linear.x += 0.03 * data.axes[3]
         self.baseVel.angular.z += 0.01 * data.axes[2]
+        self.setPosition()
         print(self.jointTarget.data)
+        print("Active Joint : ", self.activeJoint)
+        rospy.loginfo("Received new commands")
 
     def joint_state_listener_callback(self, data):
         self.jointStates = []
@@ -62,16 +66,17 @@ self.joint_state_listener_callback)
 
 
     def runNode(self):
-        while not rospy.is_shutdown():
-            self.setPosition()
-        #rospy.spin()
+        rospy.spin()
 
     def printInfo(self):
         print("Press Up/Down/Left/Right to move the joint")
         print("Change the joint with R1/L1")
 
 if __name__ == "__main__":
-    myControlNode = ControllerNode()
-    myControlNode.goHomePosition()
-    myControlNode.printInfo()
-    myControlNode.runNode()
+    try:
+        myControlNode = ControllerNode()
+        myControlNode.goHomePosition()
+        myControlNode.printInfo()
+        myControlNode.runNode()
+    except rospy.ROSInterruptException:
+        pass
