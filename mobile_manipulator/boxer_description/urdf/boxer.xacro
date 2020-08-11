@@ -352,6 +352,14 @@ to be that way. -->
 	<child link="chassis_link" />
 </joint>
 
+<!-- link for collision avoidance-->
+<link name="base_sphere" />
+<joint name="base_sphere_joint=" type="fixed">
+  <origin xyz="0.15 0 0.25" />
+  <parent link="base_link" />
+  <child link="base_sphere" />
+</joint>
+
 <!-- Projection of base_link on the ground to get the 3D data
 in the right frame w.r.t the ground. -->
 <link name="base_footprint" />
@@ -394,7 +402,7 @@ in the right frame w.r.t the ground. -->
 
 <link name="top_camera" />
 <joint name="top_camera_joint" type="fixed">
-	<origin xyz="0.1 0 0.1" rpy="0 0 0" />
+	<origin xyz="0.1 0 0.3" rpy="0 ${-0/10} 0" />
 	<parent link="top_mount" />
 	<child link="top_camera" />
 </joint>

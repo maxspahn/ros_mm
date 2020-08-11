@@ -10,14 +10,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://mobile_manipulator/world/meshes/sphere.dae" scale="${r} ${r} ${r}"/>
+        <sphere radius="${r/100}"/>
       </geometry>
       <material name="Gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://mobile_manipulator/world/meshes/sphere.dae"/>
+        <sphere radius="${r/100}"/>
       </geometry>
     </collision>
   </link>

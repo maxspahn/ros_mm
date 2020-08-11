@@ -53,6 +53,7 @@ self.joint_state_listener_callback)
         rospy.loginfo("Received new commands")
 
     def joint_state_listener_callback(self, data):
+        self.basePub.publish(self.baseVel)
         self.jointStates = []
         for i in range(7):
             self.jointStates.append(data.position[i+3])
@@ -66,6 +67,7 @@ self.joint_state_listener_callback)
 
 
     def runNode(self):
+        self.setPosition()
         rospy.spin()
 
     def printInfo(self):

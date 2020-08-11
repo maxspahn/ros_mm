@@ -107,6 +107,14 @@
       <dynamics damping="${joint_damping}"/>
       <!-- end for simulation -->
     </joint>
+
+    <!-- sphere 2 for collision avoidance-->
+    <link name="${arm_id}_link2_sphere" />
+    <joint name="${arm_id}_link2_sphere_joint" type="fixed">
+      <origin xyz="0 -0.1896 0"/>
+      <parent link="${arm_id}_link2"/>
+      <child link="${arm_id}_link2_sphere"/>
+    </joint>
     <link name="${arm_id}_link3">
       <visual>
         <geometry>
@@ -266,6 +274,13 @@
       <!-- for simulation -->
       <dynamics damping="${joint_damping}"/>
       <!-- end for simulation -->
+    </joint>
+    <!-- sphere 7 for collision avoidance-->
+    <link name="${arm_id}_link7_sphere" />
+    <joint name="${arm_id}_link7_sphere_joint" type="fixed">
+      <origin xyz="0 0 0"/>
+      <parent link="${arm_id}_link7"/>
+      <child link="${arm_id}_link7_sphere"/>
     </joint>
     <link name="${arm_id}_link8">
       <!-- for simulation -->
