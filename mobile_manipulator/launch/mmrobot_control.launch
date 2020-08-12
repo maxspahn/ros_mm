@@ -1,5 +1,4 @@
 <launch>
-  <arg name="use_rviz" default="true"/>
   <arg name="load_gripper" default="true"/>
   <arg name="panda_hi" default="PositionJointInterface"/>
   <arg name="effort_control" default="follow_trajectory"/>
@@ -68,11 +67,5 @@
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="/mmrobot" respawn="false" output="screen">
   </node>
-
-  <!-- rviz -->
-  <group if="$(arg use_rviz)">
-    <node pkg="rviz" type="rviz" name="rviz" required="true"
-          args="-d $(find mobile_mpc)/config/mpc.rviz"/>
-  </group>
 
 </launch>

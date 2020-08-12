@@ -1,0 +1,7 @@
+<launch>
+  <param name="mockUpStore_description"
+    command="$(find xacro)/xacro --inorder 
+      '$(find mobile_manipulator)/world/urdf/airlab_mockup.urdf.xacro'"/>
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param mockUpStore_description -urdf -model mockUpStore"/>
+</launch>
