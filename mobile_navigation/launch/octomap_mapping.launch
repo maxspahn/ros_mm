@@ -24,7 +24,8 @@ octomap_cloud_in"/>
 		<!-- data source to integrate (PointCloud2) -->
 		<remap from="cloud_in" to="octomap_cloud_in" />
     
-    <!--param name="filter_ground" type="bool" value="true" /-->
+    <param name="filter_ground" type="bool" value="true" />
+    <param name="ground_filter/plane_distance" type="double" value="0.2"/>
 
 	
 	</node>
