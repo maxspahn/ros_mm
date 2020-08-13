@@ -1,15 +1,17 @@
 <launch>
   <!-- Arguments -->
-  <!--arg name="map_file" default="$(find mobile_navigation)/maps/good_map.yaml"/-->
-  <arg name="map_file" default="$(find mobile_mpc)/maps/empty_world/empty_world_map.yaml"/>
+  <arg name="map_file" default="$(find mobile_navigation)/maps/good_map.yaml"/>
+  <arg name="visualize_rviz" default="False"/>
 
   <!-- Map server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
-  <!-- Gmapping , only possible and necessary when no map is available-->
-  <!--include file="$(find mobile_navigation)/launch/gmapping.launch"/-->
-
   <!-- AMCL -->
   <include file="$(find mobile_navigation)/launch/amcl.launch"/>
+
+  <group if="$(arg visualize_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find mobile_navigation)/rviz/localization.rviz"/>
+  </group>
 
 </launch>

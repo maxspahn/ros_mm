@@ -1,0 +1,10 @@
+<launch>
+  
+  <include file="$(find mobile_navigation)/launch/gmapping.launch"/>
+
+  <node pkg="rviz" type="rviz" name="rviz" required="true"
+        args="-d $(find mobile_navigation)/rviz/map_creation.rviz"/>
+
+  <!-- The map can be saved using rosrun map_server map_saver -f <path/to/map.file-->
+
+</launch>
