@@ -1,0 +1,46 @@
+#! /usr/bin/env python
+
+import rospy
+
+import numpy as np
+
+from std_msgs.msg import Float64MultiArray, Float64
+from mm_msgs.srv import MMIk
+from geometry_msgs.msg import Pose, PoseStamped
+
+def mm_ik_client():
+    # Wait for Service to come up
+    rospy.wait_for_service('ik_computation')
+    computeIk = rospy.ServiceProxy('ik_computation', MMIk)
+
+    # Define the stamped pose
+    p = Pose()
+    p.position.x = -0.3
+    p.position.y = 0.3
+    p.position.z = 1.2
+    # Pointing in negatif z direction
+    p.orientation.x = 0.0
+    p.orientation.y = 1.0000
+    p.orientation.z = 0.0000
+    p.orientation.w = 0.0000
+    pS = PoseStamped()
+    pS.pose = p
+    #Define the frame in which the pose is given
+    pS.header.frame_id = "odom"
+    resp1 = computeIk(pS)
+    print("config :",  resp1.config.data)
+
+    # If the mpc should be used -> for further details check mobile_mpc package
+    mpcGoalConfig = np.concatenate((np.zeros(3), np.array(resp1.config.data)))
+    return resp1.errorFlag
+
+
+if __name__ == "__main__":
+    try:
+        # Initializes a rospy node so that the SimpleActionClient can
+        # publish and subscribe over ROS.
+        rospy.init_node("mm_ik_client")
+        result = mm_ik_client()
+        print("errorflag : ", result)
+    except rospy.ROSInterruptException:
+        print("program interrupted before completion")

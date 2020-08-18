@@ -1,0 +1,4 @@
+geometry_msgs/PoseStamped pose
+---
+std_msgs/Float64MultiArray config
+int16 errorFlag
