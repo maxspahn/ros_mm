@@ -1,0 +1,3 @@
+string goalType
+int16 motionType
+std_msgs/Float64MultiArray targetConfig
