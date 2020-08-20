@@ -2,6 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mmrobot_description">
   <xacro:arg name="robot_name" default="mmrobot"/>
   <xacro:arg name="panda_hi" default="EffortJointInterface"/>
+  <xacro:arg name="grasp_fix" default="False"/>
 
   <xacro:include filename="$(find mobile_manipulator)/franka_description/robots/panda_arm.xacro"/>
   <xacro:include filename="$(find mobile_manipulator)/franka_description/robots/hand.xacro"/>
@@ -17,6 +18,7 @@
 
   <xacro:panda_arm arm_id='$(arg robot_name)' connected_to='top_mount' xyz='-0.15 0 0' />
   <xacro:hand ns='$(arg robot_name)' rpy="0 0 ${-pi/4}" connected_to="$(arg robot_name)_link8"/>
-  <xacro:panda_gazebo robot_name="$(arg robot_name)" />
+  <xacro:panda_gazebo robot_name="$(arg robot_name)" grasp_fix="$(arg grasp_fix)" />
   <xacro:panda_transmission robot_name="$(arg robot_name)" load_hand="true" hi="$(arg panda_hi)"/>
+
 </robot>

@@ -1,5 +1,6 @@
 <launch>
   <arg name="panda_hi" default="EffortJointInterface"/>
+  <arg name="grasp_fix" default="False"/>
   <arg name="boxer_control_mode" default="diff_drive"/>
   <!-- GAZEBO arguments -->
   <arg name="paused" default="false"/>
@@ -12,7 +13,8 @@
   <param name="mmrobot/robot_description"
     command="$(find xacro)/xacro --inorder
       '$(find mobile_manipulator)/robot_description/mmrobot.urdf.xacro'
-      panda_hi:=$(arg panda_hi)"
+      panda_hi:=$(arg panda_hi)
+      grasp_fix:=$(arg grasp_fix)"
   />
 
   <!--launch GAZEBO with own world configuration -->
