@@ -15,18 +15,25 @@ def mm_ik_client():
 
     # Define the stamped pose
     p = Pose()
-    p.position.x = -0.3
-    p.position.y = 0.3
+    p.position.x = -1.0
+    p.position.y = -5.5
     p.position.z = 1.2
+    p.position.x = 0.2
+    p.position.y = -0.422
+    p.position.z = 0.591
     # Pointing in negatif z direction
-    p.orientation.x = 0.0
-    p.orientation.y = 1.0000
-    p.orientation.z = 0.0000
-    p.orientation.w = 0.0000
+    p.orientation.x = 0.449
+    p.orientation.y = 0.884
+    p.orientation.z = 0.028
+    p.orientation.w = 0.129
+    p.orientation.x = 0.713
+    p.orientation.y = 0.701
+    p.orientation.z = 0.005
+    p.orientation.w = 0.004
     pS = PoseStamped()
     pS.pose = p
     #Define the frame in which the pose is given
-    pS.header.frame_id = "odom"
+    pS.header.frame_id = "mmrobot_link0"
     resp1 = computeIk(pS)
     print("config :",  resp1.config.data)
 

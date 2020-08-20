@@ -12,12 +12,13 @@ bool computeIK(mm_msgs::MMIk::Request  &req, mm_msgs::MMIk::Response &res)
   geometry_msgs::PoseStamped posePanda;
   tfListenerPtr->waitForTransform("mmrobot_link0", req.pose.header.frame_id, ros::Time::now(), ros::Duration(1.0));
   tfListenerPtr->transformPose("mmrobot_link0", req.pose, posePanda); 
+  std::cout << posePanda << std::endl;
   std::string chain_start = "mmrobot_link0";
-  std::string chain_end = "mmrobot_link8";
-  double timeout = 0.5;
-  unsigned int maxiters = 1000;
+  std::string chain_end = "mmrobot_hand";
+  double timeout = 0.05;
+  unsigned int maxiters = 500;
   std::string urdf_param = "/mmrobot/robot_description";
-  double eps = 1e-5;
+  double eps = 1e-2;
   TRAC_IK::TRAC_IK tracik_solver(chain_start, chain_end, urdf_param, timeout, eps);
   KDL::Chain chain;
   KDL::JntArray ll, ul; // Joint Limits
@@ -26,8 +27,8 @@ bool computeIK(mm_msgs::MMIk::Request  &req, mm_msgs::MMIk::Response &res)
   KDL::JntArray nominal(chain.getNrOfJoints());
   for (uint j = 0; j < ll.data.size(); j++)
   {
-    ll(j) *= 0.8;
-    ul(j) *= 0.8;
+    ll(j) *= 0.7;
+    ul(j) *= 0.7;
     nominal(j) = (ll(j) + ul(j)) / 2.0;
   }
 
