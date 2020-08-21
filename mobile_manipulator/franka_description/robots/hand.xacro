@@ -28,6 +28,8 @@
       </inertial>
       <!-- end for simulation -->
     </link>
+
+    <link name="${ns}_ee"/>
     <link name="${ns}_leftfinger">
       <visual>
         <geometry>
@@ -70,6 +72,11 @@
       </inertial>
       <!-- end for simulation -->
     </link>
+    <joint name="${ns}_ee_joint" type="fixed">
+      <parent link="${ns}_hand"/>
+      <child link="${ns}_ee"/>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </joint>
     <joint name="${ns}_finger_joint1" type="prismatic">
       <parent link="${ns}_hand"/>
       <child link="${ns}_leftfinger"/>
