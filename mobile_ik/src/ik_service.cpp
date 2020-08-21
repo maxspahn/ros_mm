@@ -17,11 +17,19 @@ bool computeIK(mm_msgs::MMIk::Request  &req, mm_msgs::MMIk::Response &res)
   nh.getParam("ik/limitsFactor", limitsFactor);
   tf::TransformListener *tfListenerPtr = new tf::TransformListener();
   geometry_msgs::PoseStamped posePanda;
-  tfListenerPtr->waitForTransform("mmrobot_link0", req.pose.header.frame_id, ros::Time::now(), ros::Duration(0.5));
-  tfListenerPtr->transformPose("mmrobot_link0", req.pose, posePanda); 
-  std::cout << posePanda << std::endl;
+  try {
+    tfListenerPtr->waitForTransform("mmrobot_link0", req.pose.header.frame_id, ros::Time::now(), ros::Duration(0.5));
+    tfListenerPtr->transformPose("mmrobot_link0", req.pose, posePanda); 
+  }
+  catch (tf::TransformException ex) {
+    ROS_WARN("Error transform");
+    ROS_WARN("%s", ex.what());
+    res.errorFlag = -1;
+    return true;
+  }
+    
   std::string chain_start = "mmrobot_link0";
-  std::string chain_end = "mmrobot_hand";
+  std::string chain_end = "mmrobot_ee";
   std::string urdf_param = "/mmrobot/robot_description";
   TRAC_IK::TRAC_IK tracik_solver(chain_start, chain_end, urdf_param, timeout, eps);
   KDL::Chain chain;
@@ -45,6 +53,12 @@ bool computeIK(mm_msgs::MMIk::Request  &req, mm_msgs::MMIk::Response &res)
   KDL::Frame target_pose;
 
 
+  /*
+  if ((posePanda.pose.position.x * posePanda.pose.position.x) + (posePanda.pose.position.y * posePanda.pose.position.y) > 4) {
+    res.errorFlag = -1;
+    return true;
+  }
+  */
   target_pose.M = KDL::Rotation::Quaternion(posePanda.pose.orientation.x,
                                             posePanda.pose.orientation.y,
                                             posePanda.pose.orientation.z,
