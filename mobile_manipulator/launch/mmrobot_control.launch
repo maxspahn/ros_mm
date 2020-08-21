@@ -40,7 +40,8 @@
   </group>
 
   
-  <node name="controller_spawner_hand" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/mmrobot" args="panda_hand_controller" />
+  <node name="controller_spawner_finger1" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="panda_finger1_effort_controller --namespace mmrobot" />
+  <node name="controller_spawner_finger2" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="panda_finger2_effort_controller --namespace mmrobot" />
 
   <group if="$(eval panda_hi == 'EffortJointInterface')">
     <group if="$(eval effort_control == 'inhouse_position')">

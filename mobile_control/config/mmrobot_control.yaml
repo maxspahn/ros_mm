@@ -48,6 +48,16 @@ panda_hand_controller:
 
         state_publish_rate: 25
 
+panda_finger1_effort_controller:
+        type: "effort_controllers/JointEffortController"
+        joint: "mmrobot_finger_joint1"
+        gains: { p: 5, d: 3.0, i: 0, i_clamp: 1 }
+
+panda_finger2_effort_controller:
+        type: "effort_controllers/JointEffortController"
+        joint: "mmrobot_finger_joint2"
+        gains: { p: 5, d: 3.0, i: 0, i_clamp: 1 }
+
 joint_position_controller:
     type: panda_simulation/JointPositionController
     arm_id: panda
