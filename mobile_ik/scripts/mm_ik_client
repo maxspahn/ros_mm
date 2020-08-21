@@ -4,7 +4,6 @@ import rospy
 
 import numpy as np
 
-from std_msgs.msg import Float64MultiArray, Float64
 from mm_msgs.srv import MMIk
 from geometry_msgs.msg import Pose, PoseStamped
 
@@ -44,8 +43,6 @@ def mm_ik_client():
 
 if __name__ == "__main__":
     try:
-        # Initializes a rospy node so that the SimpleActionClient can
-        # publish and subscribe over ROS.
         rospy.init_node("mm_ik_client")
         result = mm_ik_client()
         print("errorflag : ", result)

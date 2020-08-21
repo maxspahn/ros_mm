@@ -1,0 +1,5 @@
+ik:
+  tolerance: 0.01
+  timeout: 0.5
+  maxiters: 500
+  limitsFactor: 0.8

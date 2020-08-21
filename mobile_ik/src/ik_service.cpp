@@ -8,17 +8,21 @@
 
 bool computeIK(mm_msgs::MMIk::Request  &req, mm_msgs::MMIk::Response &res)
 {
+  ros::NodeHandle nh;
+  double eps, timeout, limitsFactor;
+  int maxiters;
+  nh.getParam("ik/tolerance", eps);
+  nh.getParam("ik/timeout", timeout);
+  nh.getParam("ik/maxiters", maxiters);
+  nh.getParam("ik/limitsFactor", limitsFactor);
   tf::TransformListener *tfListenerPtr = new tf::TransformListener();
   geometry_msgs::PoseStamped posePanda;
-  tfListenerPtr->waitForTransform("mmrobot_link0", req.pose.header.frame_id, ros::Time::now(), ros::Duration(1.0));
+  tfListenerPtr->waitForTransform("mmrobot_link0", req.pose.header.frame_id, ros::Time::now(), ros::Duration(0.5));
   tfListenerPtr->transformPose("mmrobot_link0", req.pose, posePanda); 
   std::cout << posePanda << std::endl;
   std::string chain_start = "mmrobot_link0";
   std::string chain_end = "mmrobot_hand";
-  double timeout = 0.05;
-  unsigned int maxiters = 500;
   std::string urdf_param = "/mmrobot/robot_description";
-  double eps = 1e-2;
   TRAC_IK::TRAC_IK tracik_solver(chain_start, chain_end, urdf_param, timeout, eps);
   KDL::Chain chain;
   KDL::JntArray ll, ul; // Joint Limits
@@ -27,8 +31,8 @@ bool computeIK(mm_msgs::MMIk::Request  &req, mm_msgs::MMIk::Response &res)
   KDL::JntArray nominal(chain.getNrOfJoints());
   for (uint j = 0; j < ll.data.size(); j++)
   {
-    ll(j) *= 0.7;
-    ul(j) *= 0.7;
+    ll(j) *= limitsFactor;
+    ul(j) *= limitsFactor;
     nominal(j) = (ll(j) + ul(j)) / 2.0;
   }
 
@@ -61,6 +65,10 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "ik_computation");
   ros::NodeHandle nh;
+  if (!nh.hasParam("ik/tolerance")) {
+    ROS_ERROR("No ik settings for set in the parameter space");
+    return 0;
+  }
 
   ros::ServiceServer service = nh.advertiseService("ik_computation", computeIK);
   ROS_INFO("Ready to computeIK.");
