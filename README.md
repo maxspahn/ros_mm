@@ -6,7 +6,8 @@ Clearpath boxer and a Franka Emika Panda manipulator.
 ### External dependencies
 Install missing dependency *trac_ik_lib*:
 
-`sudo apt-get install ros-kinetic-trac-ik-kinematics-plugin`
+`sudo apt-get install ros-melodic-trac-ik-kinematics-plugin`
+
 `sudo apt-get update`
 
 ### Organization
