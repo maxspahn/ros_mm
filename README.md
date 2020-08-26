@@ -3,6 +3,11 @@
 ROS implemantation for a mobile manipulator. The manipulator is a combination of the
 Clearpath boxer and a Franka Emika Panda manipulator.
 
+### External dependencies
+Install missing dependency *trac_ik_lib*:
+
+`sudo apt-get install ros-kinetic-trac-ik-kinematics-plugin`
+`sudo apt-get update`
 
 ### Organization
 The repository provides four packages for ros melodic. 
