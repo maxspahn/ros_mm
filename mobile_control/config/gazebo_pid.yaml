@@ -12,3 +12,31 @@ gazebo_ros_control:
         p: 0.1
         i: 1
         d: 0
+      mmrobot_joint1:
+        p: 12000
+        i: 1
+        d: 50
+      mmrobot_joint2:
+        p: 30000
+        i: 0.02
+        d: 100
+      mmrobot_joint3:
+        p: 18000
+        i: 0.01
+        d: 50
+      mmrobot_joint4:
+        p: 18000
+        i: 0.01
+        d: 70
+      mmrobot_joint5:
+        p: 12000
+        i: 0.01
+        d: 70
+      mmrobot_joint6:
+        p: 7000
+        i: 0.01
+        d: 50
+      mmrobot_joint7:
+        p: 2000
+        i: 0
+        d: 20
