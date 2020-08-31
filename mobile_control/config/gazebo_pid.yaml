@@ -1,0 +1,14 @@
+gazebo_ros_control:
+    pid_gains:
+      wheel_left_joint:
+        p: 5.0
+        i: 20.0
+        d: 0
+      wheel_right_joint:
+        p: 5.0
+        i: 20.0
+        d: 0
+      lift_joint:
+        p: 0.1
+        i: 1
+        d: 0

@@ -22,8 +22,6 @@
   </include>
 
   <include file="$(find mobile_manipulator)/launch/store.launch"/>
-  
-
-    
-
+  <!-- Load the gazebo params, PID error fix -->
+  <rosparam ns="mmrobot" command="load" file="$(find mobile_control)/config/gazebo_pid.yaml"/>
 </launch>
