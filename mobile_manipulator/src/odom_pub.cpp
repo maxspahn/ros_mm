@@ -13,6 +13,7 @@ private:
   ros::Subscriber jointState_pub_;
   tf::TransformBroadcaster odom_broadcaster_;
   ros::Rate rate_;
+  ros::Time current_time_;
 
   double x_, y_, theta_, w1_, w2_, wheel_radius_, wheel_seperation_;
 
@@ -44,6 +45,7 @@ void OdomPub::jointStates_cb(const sensor_msgs::JointState::ConstPtr& data)
 {
   w1_ = data->velocity[1];
   w2_ = data->velocity[2];
+  current_time_ = data->header.stamp;
   // Filtering simple way
   if (std::abs(w1_ - 0.0001) < 0.001) w1_ = 0.0;
   if (std::abs(w2_ - 0.0001) < 0.001) w2_ = 0.0;
@@ -81,7 +83,7 @@ void OdomPub::loop()
     ROS_INFO("Angular Velocity : %1.2f", angular);
 
     integrateRungeKutta2(linear, angular, dt);
-    publishOdom(current_time, last_time);
+    publishOdom(current_time_, last_time);
     last_time = current_time;
     rate_.sleep();
     ros::spinOnce();
