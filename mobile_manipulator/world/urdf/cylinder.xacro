@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <robot name="robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="spawn_sphere" params="sphere_name:='sphere_0' r:='1' xyz:='0 0 0' rpy:='0 0 0' color:='Gray'">
+  <xacro:macro name="spawn_cylinder" params="cylinder_name:='cylinder_0' r:='1' l:='100' xyz:='0 0 0' rpy:='0 0 0' color:='Gray'">
   
-  <link name="${sphere_name}">
+  <link name="${cylinder_name}">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1"/>
@@ -11,23 +11,23 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="${r/100}"/>
+        <cylinder radius="${r/100}" length="${l/100}"/>
       </geometry>
       <material name="${color}" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="${r/100}"/>
+        <cylinder radius="${r/100}" length="${l/100}"/>
       </geometry>
     </collision>
   </link>
-  <joint name="world_${sphere_name}_joint" type="fixed">
+  <joint name="world_${cylinder_name}_joint" type="fixed">
     <origin xyz="${xyz}" rpy="${rpy}"/>
     <parent link="world"/>
-    <child link="${sphere_name}"/>
+    <child link="${cylinder_name}"/>
   </joint>
-  <gazebo reference="${sphere_name}">
+  <gazebo reference="${cylinder_name}">
     <material>Gazebo/${color}</material>
   </gazebo>
 </xacro:macro>

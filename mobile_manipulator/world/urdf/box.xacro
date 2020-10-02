@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <robot name="robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:macro name="spawn_sphere" params="sphere_name:='sphere_0' r:='1' xyz:='0 0 0' rpy:='0 0 0' color:='Gray'">
-  
-  <link name="${sphere_name}">
+  <xacro:macro name="spawn_box" params="box_name:='box_0' b:='1' l:='1' h:='1' xyz:='0 0 0' rpy:='0 0 0.785' color:='White'">
+  <link name="${box_name}">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="1"/>
@@ -11,23 +10,23 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="${r/100}"/>
+        <box size="${b} ${l} ${h}" />
       </geometry>
-      <material name="${color}" />
+      <material name="Gray" />
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <sphere radius="${r/100}"/>
+        <box size="${b} ${l} ${h}" />
       </geometry>
     </collision>
   </link>
-  <joint name="world_${sphere_name}_joint" type="fixed">
+  <joint name="world_${box_name}_joint" type="fixed">
     <origin xyz="${xyz}" rpy="${rpy}"/>
     <parent link="world"/>
-    <child link="${sphere_name}"/>
+    <child link="${box_name}"/>
   </joint>
-  <gazebo reference="${sphere_name}">
+  <gazebo reference="${box_name}">
     <material>Gazebo/${color}</material>
   </gazebo>
 </xacro:macro>
