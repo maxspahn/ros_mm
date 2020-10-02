@@ -1,3 +1,4 @@
+uint8 num_samples
 geometry_msgs/PoseStamped pose
 ---
 std_msgs/Float64MultiArray config

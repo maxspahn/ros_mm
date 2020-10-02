@@ -1,0 +1,2 @@
+geometry_msgs/Pose2D basePose
+std_msgs/Float64MultiArray armConfig

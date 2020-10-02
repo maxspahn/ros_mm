@@ -52,6 +52,10 @@ add_message_files(
   LinearConstraint3D.msg
   LinearConstraint3DArray.msg
   ActiveInferenceGoal.msg
+  DynamicObstacleMsg.msg
+  ObjectMsg.msg
+  NurbsEval2D.msg
+  MobileRobotPose.msg
 )
 
 ## Generate services in the 'srv' folder
