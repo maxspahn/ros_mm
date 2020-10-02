@@ -65,3 +65,5 @@ It has to be plugged in before you start the roscore node.
 roslaunch mobile_manipulator mmrobot_gazebo.launch panda_hi:="VelocityJointInterface" boxer_control_mode:="diff_drive"
 roslaunch mobile_navigation teleop.launch
 ```
+
+
