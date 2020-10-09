@@ -50,7 +50,10 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <!-- also depends on Eigen3 ompl -->
   <buildtool_depend>catkin</buildtool_depend>
-  <depend>mobile_manipulator</depend>
+  <!-- <depend>mobile_manipulator</depend> -->
+  <depend>amcl</depend>
+  <depend>gmapping</depend>
+  <depend>dwa_local_planner</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

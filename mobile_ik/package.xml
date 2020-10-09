@@ -19,6 +19,8 @@
   <build_export_depend>mobile_manipulator</build_export_depend>
   <exec_depend>mobile_manipulator</exec_depend>
   <exec_depend>mm_msgs</exec_depend>
+  
+  <depend>trac_ik_kinematics_plugin</depend>
 
 
 </package>
